@@ -1,14 +1,9 @@
 /* global io location */
 
-console.log('Socket.io attempting to connect to ' + location.href);
-var host = location.protocol + '//' + location.host + ':' + (location.port || 80);
+var host = location.protocol + '//' + location.host;
 var socket = io(host);
 var stroke = null;
 var strokes = [];
-
-socket.on('connection', function () {
-  console.log('connection');
-});
 
 // These are just some desktop and mobile device events.
 // TODO: Figure out what events actually get sent by the VIVE.
@@ -45,8 +40,7 @@ function relay (event) {
   var z = event.z || event.pageZ || 0; // Doesn't actually exist now.
   var t = Date.now();
   var data = {type: type, x: x, y: y, z: z, t: t};
-  socket.emit('data', data);
-  console.log(data);
+  socket.emit('event', data);
   stroke.add(x, y, z, t);
 }
 

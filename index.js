@@ -27,11 +27,7 @@ function serve (request, response) {
 }
 
 io.on('connection', function (client) {
-  console.log('connection');
   client.on('event', function (data) {
     console.log('event', data);
-  });
-  client.on('disconnect', function () {
-    console.log('disconnect');
   });
 });
