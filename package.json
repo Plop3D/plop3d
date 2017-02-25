@@ -26,6 +26,7 @@
   "dependencies": {
     "bouncy": "^3.2.2",
     "ip": "^1.1.4",
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+    "yargs": "^6.6.0"
   }
 }

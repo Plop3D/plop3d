@@ -1,14 +1,15 @@
 var ip = require('ip');
 var bouncy = require('bouncy');
+var argv = require('yargs').argv;
 
 var remote = new Host({
-  host: process.argv[3] || '0.0.0.0',
-  port: process.argv[4] || 8080
+  host: argv.host || argv.h || '0.0.0.0',
+  port: 8080
 });
 
 var local = new Host({
   host: ip.address(),
-  port: process.argv[5] || 8888
+  port: 8888
 });
 
 function Host (options) {
