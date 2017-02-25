@@ -203,13 +203,13 @@ AFRAME.registerSystem('brush', {
   },
   addShape: function(brushName) {
     var brush = document.querySelector('#left-hand').components.brush;
-    var currentStroke = this.addNewStroke(brush.data.brush, brush.color, 1);
+    var currentStroke = this.addNewStroke(brushName, brush.color, 0.05);
     var position = new THREE.Vector3();
     var rotation = new THREE.Quaternion();
     var scale = new THREE.Vector3();
     brush.obj.matrixWorld.decompose(position, rotation, scale);
     var pointerPosition = this.getPointerPosition(position, rotation);
-    currentStroke.addPoint(position, rotation, pointerPosition, brush.sizeModifier, Date.now);
+    currentStroke.addPoint(position, rotation, pointerPosition, 1.0, Date.now());
   },
   addNewStroke: function (brushName, color, size) {
     var Brush = this.getBrushByName(brushName);

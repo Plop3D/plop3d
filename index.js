@@ -31,4 +31,12 @@ io.on('connection', function (client) {
   client.on('event', function (data) {
     console.log('event', data);
   });
+
+  var shapesInterval = setInterval(function(){
+    client.emit('alexa-plop', {shape: 'cubes'});
+  }, 10000);
+
+  client.on('disconnection', function(){
+    clearInterval(shapesInterval);
+  })
 });
