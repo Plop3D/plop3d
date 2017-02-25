@@ -3,10 +3,11 @@ var http = require('http');
 var server = http.createServer(serve);
 var io = require('socket.io')(server);
 var port = 8080;
+var ip = require('ip').address();
 
 // Start listening for requests.
 server.listen(port);
-console.log('Listening at http://0.0.0.0:' + port);
+console.log('Listening at http://' + ip + ':' + port);
 
 /**
  * Handle an HTTP request for a static resource.
