@@ -35,16 +35,49 @@ function serve (request, response) {
   });
 }
 
-io.on('connection', function (client) {
-  client.on('event', function (data) {
-    console.log('event', data);
-  });
 
-  var shapesInterval = setInterval(function(){
-    client.emit('alexa-plop', {shape: 'cubes'});
-  }, 10000);
-
-  client.on('disconnection', function(){
-    clearInterval(shapesInterval);
-  })
-});
+// var rooms = {};
+// var initroom = {};
+//
+// io.on('connection', function (client) {
+//   client.on('stroke', function(data) {
+//     if(client.room){
+//       for(var i = 0; i < client.room.length; i++){
+//         client.room[i].emit('stroke', data);
+//       }
+//     }
+//   });
+//
+//   client.on('room', function(data) {
+//     var room;
+//     if(rooms[data.room] === undefined){
+//       room = rooms[data.room] = [client];
+//     } else {
+//       room = rooms[data.room];
+//       room.push(client);
+//     }
+//     client.on('disconnection', function() {
+//       for(var i = 0; i < room.length; i++){
+//         if(room[i] === client){
+//           room.splice(i, 1);
+//         }
+//       }
+//     });
+//     if(room.length > 0){
+//       var init_id = Math.floor(Math.random() * 1000);
+//       initroom[init_id] = {
+//         from: room[0],
+//         to: client
+//       };
+//       room[0].emit('pull-state', { id: init_id});
+//     }
+//     client.room = room;
+//   });
+//
+//   client.on('pull-state-response', function(data) {
+//     initroom[data.id].emit('push-state', data.state);
+//     delete initroom[data.id];
+//   });
+//
+//   // client.emit('alexa-plop', {shape: 'cubes'});
+// });
