@@ -55,25 +55,8 @@ AFRAME.registerSystem('painter', {
       });
     }
 
-    this.startPainting = false;
+    this.startPainting = true;
     var self = this;
-    document.addEventListener('stroke-started', function (event) {
-      if (!self.startPainting) {
-        var logo = document.getElementById('logo');
-        var mesh = logo.getObject3D('mesh');
-        var object = { alpha: 1.0 };
-        var tween = new AFRAME.TWEEN.Tween(object)
-          .to({alpha: 0.0}, 4000)
-          .onComplete(function () {
-            logo.setAttribute('visible', false);
-          })
-          .onUpdate(function () {
-            mesh.children[0].material.opacity = object.alpha;
-          });
-        tween.start();
-        self.startPainting = true;
-      }
-    });
 
     // @fixme This is just for debug until we'll get some UI
     document.addEventListener('keyup', function (event) {

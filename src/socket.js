@@ -1,15 +1,28 @@
-/* global io location */
+/* global io location navigator */
 
 var host = location.protocol + '//' + location.host;
 var socket = io(host);
+window.socket = socket;
 var stroke = null;
 var strokes = [];
+var shapes = {
+  cube: 'cubes',
+  sphere: 'spheres'
+};
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function () {
   var brushSystem = document.querySelector('a-scene').systems.brush;
-  socket.on('alexa-plop', function(data) {
-    brushSystem.addShape(data.shape);
+  socket.on('plop', function (shape) {
+    brushSystem.addShape(shapes[shape] || shape);
   });
+  socket.on('stroke', function (data) {
+    brushSystem.addEvent(data);
+  });
+});
+
+socket.on('connect', function () {
+  var room = location.pathname.split('/')[2];
+  socket.emit('join', room);
 });
 
 // These are just some desktop and mobile device events.
@@ -46,7 +59,7 @@ function relay (event) {
   var y = event.y || event.pageY;
   var z = event.z || event.pageZ || 0; // Doesn't actually exist now.
   var t = Date.now();
-  var data = {type: type, x: x, y: y, z: z, t: t};
+  var data = { type: type, x: x, y: y, z: z, t: t };
   socket.emit('event', data);
   stroke.add(x, y, z, t);
 }
@@ -55,13 +68,13 @@ function Stroke () {
   this.points = [];
 }
 
-function Point (x, y, z, t) {
+function Point(x, y, z, t) {
   this.x = x;
   this.y = y;
   this.z = z;
   this.t = t;
 }
 
-Stroke.prototype.add = function (x, y, z, t) {
+Stroke.prototype.add = function(x, y, z, t) {
   this.points.push(new Point(x, y, z, t));
 };

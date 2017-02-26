@@ -215,7 +215,7 @@ AFRAME.registerSystem('brush', {
   },
   addShape: function(brushName) {
     var brush = document.querySelector('#left-hand').components.brush;
-    var currentStroke = this.addNewStroke(brushName, brush.color, 0.05);
+    var currentStroke = this.addNewStroke(brushName, brush.color, 1);
     var position = new THREE.Vector3();
     var rotation = new THREE.Quaternion();
     var scale = new THREE.Vector3();
@@ -223,24 +223,27 @@ AFRAME.registerSystem('brush', {
     var pointerPosition = this.getPointerPosition(position, rotation);
     currentStroke.addPoint(position, rotation, pointerPosition, 1.0, Date.now());
   },
-  addEvent: function(event) {
+  addEvent: function(event, emit) {
     if (event.type === 'stroke') {
       var stroke = this.addNewStroke(
         event.brush,
         new THREE.Color().fromArray([event.color.r, event.color.g, event.color.b]),
-        event.size
+        event.size,
+        true
       );
-      strks[event.stroke_id] = stroke;
+      strks[event.strokeId] = stroke;
     } else {
       var position = new THREE.Vector3().fromArray([event.position.x, event.position.y, event.position.z]);
       var orientation = new THREE.Quaternion().fromArray([event.rotation.w, event.rotation.x, event.rotation.y, event.rotation.z]);
       var pressure = event.sizeModifier;
       var timestamp = event.time;
       var pointerPosition = this.getPointerPosition(position, orientation);
-      strks[event.stroke_id].addPoint(position, orientation, pointerPosition, pressure, timestamp);
+      strks[event.strokeId].addPoint(position, orientation, pointerPosition, pressure, timestamp);
     }
+    if(emit)
+      window.socket.emit('stroke', event);
   },
-  addNewStroke: function(brushName, color, size) {
+  addNewStroke: function(brushName, color, size, not_emit) {
     var Brush = this.getBrushByName(brushName);
     if (!Brush) {
       var newBrushName = Object.keys(AFRAME.BRUSHES)[0];
@@ -254,19 +257,23 @@ AFRAME.registerSystem('brush', {
     stroke.init(color, size);
     this.strokes.push(stroke);
 
-    // var stroke_id = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
-    // window.events.push({
-    //   type: 'stroke',
-    //   stroke_id: stroke_id,
-    //   brush: brushName,
-    //   color: {
-    //     r: color.r,
-    //     g: color.g,
-    //     b: color.b
-    //   },
-    //   size: size
-    // });
-    // stroke.id = stroke_id;
+    if (not_emit === true) {
+      stroke.not_emit = true;
+    } else {
+      var strokeId = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
+      window.socket.emit('stroke', {
+        type: 'stroke',
+        strokeId: strokeId,
+        brush: brushName,
+        color: {
+          r: color.r,
+          g: color.g,
+          b: color.b
+        },
+        size: size
+      });
+      stroke.id = strokeId;
+    }
 
     var entity = document.createElement('a-entity');
     entity.className = "a-stroke";
