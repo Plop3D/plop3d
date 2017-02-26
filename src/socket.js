@@ -5,6 +5,13 @@ var socket = io(host);
 var stroke = null;
 var strokes = [];
 
+document.addEventListener("DOMContentLoaded", function() {
+  var brushSystem = document.querySelector('a-scene').systems.brush;
+  socket.on('alexa-plop', function(data) {
+    brushSystem.addShape(data.shape);
+  });
+});
+
 // These are just some desktop and mobile device events.
 // TODO: Figure out what events actually get sent by the VIVE.
 var types = {
