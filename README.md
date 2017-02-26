@@ -12,3 +12,4 @@ npm install -g cross-env exam webpack webpack-dev-server semistandard
 # Run the server in watch mode.
 npm run dev
 ```
+Index.zip file inluded for amazon echo code --- will attach zip but wanted to assure that it was in play as well.
