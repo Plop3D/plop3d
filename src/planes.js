@@ -1,12 +1,15 @@
 var math = require('mathjs');
 var events = require('../events');
+var dollarP = require('./dollarP');
+var PointP = dollarP.Point;
 
 module.exports = {
     Point: Point,
     Plane: Plane,
     CalculateNormal: calculateNormal,
     ProjectPointOntoPlane: projectPointOntoPlane,
-    LookAtEvent: lookAtEvent
+    LookAtEvent: lookAtEvent,
+    CalculatePlaneProjection: calculatePlaneProjection
 };
 
 function Point (x, y, z) {
@@ -93,10 +96,33 @@ function lookAtEvent() {
 
     // Change basis of points to xy plane normal to z axis
     // This part is not complete !!!
-    var zV = plane.z.zize();
-    console.log(zV);
-    u = new THREE.Vector3(0, 0, 1);
-    uDotz = u.dot(z);
 
+    // Step 1: Find 3 normalized vectors orthogonal to one another.
+    // Z will be the normalized normal to our plane
+    var Z = plane.normal.normalize();
 
+    // X is the projection of arbitrary vector A onto Z. This gives us a vector orthogonal to Z
+    var A = new THREE.Vector3(0, 0, 1);
+    var X = A.projectOnPlane(plane.normal);
+
+    // Y is orthogonal to both X and Z so is found by taking the cross product of these two vectors
+    var Y = new THREE.Vector3();
+    Y.crossVectors(Z, X);
+
+    // Find the translated points in 2d positions
+    var positions2d = [];
+    projectedPoints.forEach(function (point) {
+        var xCoordinate = point.dot(X);
+        var yCoordinate = point.dot(Y);
+        var point2d = new PointP(xCoordinate, yCoordinate, 1);
+        positions2d.push(point2d);
+    });
+
+    console.log(positions2d);
+
+    var recognizer = new dollarP.Recognizer;
+}
+
+function calculatePlaneProjection(planeNormal, projectVector) {
+    return projectVector.projectOnPlane(planeNormal);
 }

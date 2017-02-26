@@ -53,4 +53,16 @@ describe("planes", function () {
         })
     });
 
+    describe(".calculatePlaneProjection", function () {
+        it("test plane projection", function () {
+            var normal = new THREE.Vector3(0,0,1);
+            var projectionVector = new THREE.Vector3(1, 1, 1);
+            var result = planes.CalculatePlaneProjection(normal, projectionVector);
+            console.log(result);
+            is(result.x, 1);
+            is(result.y, 1);
+            is(result.z, 0);
+        })
+    })
+
 });
