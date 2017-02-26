@@ -411,7 +411,8 @@ AFRAME.registerSystem('brush', {
       }
     }
   },
-  loadFromUrl: function(url, binary) {
+  loadFromUrl: function (url, binary) {
+    console.log(url);
     var loader = new THREE.XHRLoader(this.manager);
     loader.crossOrigin = 'anonymous';
     if (binary === true) {
@@ -420,7 +421,7 @@ AFRAME.registerSystem('brush', {
 
     var self = this;
 
-    loader.load(url, function(buffer) {
+    loader.load(url, function (buffer) {
       if (binary === true) {
         self.loadBinary(buffer);
       } else {

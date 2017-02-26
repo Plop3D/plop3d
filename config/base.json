@@ -1,0 +1,14 @@
+{
+  "lighterRun": {
+    "live": [
+      "assets",
+      "brushes",
+      "css",
+      "src",
+      "build.js",
+      "index.html",
+      "room.html",
+      "webpack.config.js"
+    ]
+  }
+}

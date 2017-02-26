@@ -6,6 +6,9 @@
 # Install dependencies.
 npm install
 
-# Build and run server.
-npm start
+# Install some stuff globally.
+npm install -g cross-env exam webpack webpack-dev-server semistandard
+
+# Run the server in watch mode.
+npm run dev
 ```

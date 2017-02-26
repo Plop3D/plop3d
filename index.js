@@ -1,13 +1,18 @@
 var fs = require('fs');
 var http = require('http');
+var mime = require('lighter-mime');
 var server = http.createServer(serve);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 8080;
 var ip = require('ip').address();
+var spawn = require('lighter-spawn');
+var Cache = require('lighter-lru-cache');
+var cache = new Cache({length: function (i) { return i.length; }, max: 1e9 });
 
 // Start listening for requests.
 server.listen(port);
 console.log('Listening at http://' + ip + ':' + port);
+build();
 
 var rooms = {};
 
@@ -19,6 +24,9 @@ var rooms = {};
 function serve (request, response) {
   var url = request.url;
   var rel = url.substr(1);
+  var ext = rel.replace(/^.*\./, '');
+  var type = mime[ext] || mime.html;
+  var isImage = /image/.test(type);
   var path = rel || 'index.html';
   var parts = rel.split('/');
   var section = parts[0];
@@ -38,10 +46,20 @@ function serve (request, response) {
       }
       return response.end('OK');
   }
+  response.setHeader('Content-Type', type);
+  var content = cache.get(path);
+  if (content) {
+    return response.end(content);
+  }
   fs.readFile(path, function (error, content) {
     if (error) {
       response.statusCode = 404;
-      response.end('Page not found');
+      return response.end('Page not found');
+    }
+    if (isImage) {
+      cache.set(path, content);
+      var utc = (new Date(1e13)).toUTCString();
+      response.setHeader('Expires', utc);
     }
     response.end(content);
   });
@@ -74,3 +92,20 @@ io.on('connection', function (client) {
     });
   });
 });
+
+// Listen for lighter-run changes.
+process.stdin.on('data', function (chunk) {
+  try {
+    var change = JSON.parse(chunk.toString());
+    if (!/\/build\.js$/.test(change.path)) {
+      build();
+    }
+  } catch (ignore) {
+  }
+});
+
+function build () {
+  spawn('webpack').on('out', function (data) {
+    io.emit('reload');
+  });
+}
