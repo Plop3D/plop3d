@@ -17,7 +17,15 @@ console.log('Listening at http://' + ip + ':' + port);
 function serve (request, response) {
   var url = request.url;
   var rel = url.substr(1);
-  var path = rel || 'index.html';
+  var path = 'index.html';
+  if(rel){
+    if(rel.substr(0, 4) === 'room'){
+      path = 'room.html';
+    }
+    else {
+      path = rel;
+    }
+  }
   fs.readFile(path, function (error, content) {
     if (error) {
       response.statusCode = 404;
