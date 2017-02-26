@@ -5,6 +5,7 @@
   "scripts": {
     "proxy": "node proxy",
     "build": "cross-env NODE_ENV=production webpack",
+    "postinstall": "npm build",
     "dev": "webpack-dev-server --host 0.0.0.0",
     "start": "cross-env NODE_ENV=production webpack;node index",
     "lint": "semistandard -v | snazzy"
