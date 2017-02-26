@@ -44,6 +44,13 @@ describe("planes", function () {
             is(pointOnPlane.y, 10);
             is(pointOnPlane.z, -5);
         })
-    })
+    });
+
+    describe(".testEvent", function () {
+        it("test event", function () {
+            planes.LookAtEvent();
+            is(true, true);
+        })
+    });
 
 });
