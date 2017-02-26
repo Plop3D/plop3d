@@ -23,8 +23,8 @@ AFRAME.registerBrush('spheres',
       sphere.scale.set(sca, sca, sca);
       sphere.initialScale = sphere.scale.clone();
 
-      // Generate a random phase to be used in the tick animation
-      sphere.phase = Math.random() * Math.PI * 2;
+      // Generate a phase to be used in the tick animation
+      sphere.phase = Math.PI * 2;
 
       // Set the position of the sphere to match the controller positoin
       sphere.position.copy(pointerPosition);
