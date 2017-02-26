@@ -231,14 +231,14 @@ AFRAME.registerSystem('brush', {
         event.size,
         true
       );
-      strks[event.stroke_id] = stroke;
+      strks[event.strokeId] = stroke;
     } else {
       var position = new THREE.Vector3().fromArray([event.position.x, event.position.y, event.position.z]);
       var orientation = new THREE.Quaternion().fromArray([event.rotation.w, event.rotation.x, event.rotation.y, event.rotation.z]);
       var pressure = event.sizeModifier;
       var timestamp = event.time;
       var pointerPosition = this.getPointerPosition(position, orientation);
-      strks[event.stroke_id].addPoint(position, orientation, pointerPosition, pressure, timestamp);
+      strks[event.strokeId].addPoint(position, orientation, pointerPosition, pressure, timestamp);
     }
     if(emit)
       window.socket.emit('stroke', event);
@@ -260,10 +260,10 @@ AFRAME.registerSystem('brush', {
     if (not_emit === true) {
       stroke.not_emit = true;
     } else {
-      var stroke_id = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
+      var strokeId = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
       window.socket.emit('stroke', {
         type: 'stroke',
-        stroke_id: stroke_id,
+        strokeId: strokeId,
         brush: brushName,
         color: {
           r: color.r,
@@ -272,7 +272,7 @@ AFRAME.registerSystem('brush', {
         },
         size: size
       });
-      stroke.id = stroke_id;
+      stroke.id = strokeId;
     }
 
     var entity = document.createElement('a-entity');

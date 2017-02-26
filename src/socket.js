@@ -1,23 +1,28 @@
-/* global io location */
+/* global io location navigator */
 
 var host = location.protocol + '//' + location.host;
 var socket = io(host);
 window.socket = socket;
 var stroke = null;
 var strokes = [];
+var shapes = {
+  cube: 'cubes',
+  sphere: 'spheres'
+};
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function () {
   var brushSystem = document.querySelector('a-scene').systems.brush;
-  socket.on('alexa-plop', function(data) {
-    brushSystem.addShape(data.shape);
+  socket.on('plop', function (shape) {
+    brushSystem.addShape(shapes[shape] || shape);
   });
-  socket.on('stroke', function(data) {
+  socket.on('stroke', function (data) {
     brushSystem.addEvent(data);
-  })
+  });
 });
 
-socket.on('connect', function() {
-  socket.emit('room', { room: window.location.pathname.substr(6) });
+socket.on('connect', function () {
+  var room = location.pathname.split('/')[2];
+  socket.emit('join', room);
 });
 
 // These are just some desktop and mobile device events.
@@ -35,7 +40,7 @@ for (var type in types) {
   document.addEventListener(type, relay);
 }
 
-function relay(event) {
+function relay (event) {
   var type = types[event.type];
 
   // Start or stop a stroke.
@@ -59,7 +64,7 @@ function relay(event) {
   stroke.add(x, y, z, t);
 }
 
-function Stroke() {
+function Stroke () {
   this.points = [];
 }
 

@@ -86,7 +86,7 @@ AFRAME.registerComponent('brush', {
         var pointerPosition = this.system.getPointerPosition(position, rotation);
         if(this.currentStroke.not_emit !== true) {
           window.socket.emit('stroke', {
-            stroke_id: this.currentStroke.id,
+            strokeId: this.currentStroke.id,
             type: 'point',
             position: {
               x: position.x,
