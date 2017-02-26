@@ -2,6 +2,7 @@ var math = require('mathjs');
 var events = require('../events');
 var dollarP = require('./dollarP');
 var PointP = dollarP.Point;
+var PointCloudP = dollarP.PointCloud;
 
 module.exports = {
     Point: Point,
@@ -9,7 +10,8 @@ module.exports = {
     CalculateNormal: calculateNormal,
     ProjectPointOntoPlane: projectPointOntoPlane,
     LookAtEvent: lookAtEvent,
-    CalculatePlaneProjection: calculatePlaneProjection
+    CalculatePlaneProjection: calculatePlaneProjection,
+    DetectShape: detectShape
 };
 
 function Point (x, y, z) {
@@ -46,7 +48,7 @@ function projectPointOntoPlane (plane, point) {
 
 function lookAtEvent() {
     // Import the data set, probably make this the entry point and the dataset is pass as an event object
-    var line = events.GetLine();
+    var line = events.GetSquare();
 
     // Extract the position objects into a standalone array
     var positions = [];
@@ -118,11 +120,19 @@ function lookAtEvent() {
         positions2d.push(point2d);
     });
 
-    console.log(positions2d);
+    var pointCloud = new PointCloudP("line", positions2d);
 
     var recognizer = new dollarP.Recognizer;
+    var recoResult = recognizer.Recognize(positions2d);
+    console.log(recoResult);
+
 }
 
 function calculatePlaneProjection(planeNormal, projectVector) {
     return projectVector.projectOnPlane(planeNormal);
+}
+
+function detectShape(strokeSet) {
+    var result = "";
+    return result;
 }
