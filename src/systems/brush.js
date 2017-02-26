@@ -254,19 +254,19 @@ AFRAME.registerSystem('brush', {
     stroke.init(color, size);
     this.strokes.push(stroke);
 
-    var stroke_id = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
-    window.events.push({
-      type: 'stroke',
-      stroke_id: stroke_id,
-      brush: brushName,
-      color: {
-        r: color.r,
-        g: color.g,
-        b: color.b
-      },
-      size: size
-    });
-    stroke.id = stroke_id;
+    // var stroke_id = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
+    // window.events.push({
+    //   type: 'stroke',
+    //   stroke_id: stroke_id,
+    //   brush: brushName,
+    //   color: {
+    //     r: color.r,
+    //     g: color.g,
+    //     b: color.b
+    //   },
+    //   size: size
+    // });
+    // stroke.id = stroke_id;
 
     var entity = document.createElement('a-entity');
     entity.className = "a-stroke";

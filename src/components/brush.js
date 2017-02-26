@@ -84,28 +84,28 @@ AFRAME.registerComponent('brush', {
       if (this.currentStroke && this.active) {
         this.obj.matrixWorld.decompose(position, rotation, scale);
         var pointerPosition = this.system.getPointerPosition(position, rotation);
-        window.events.push({
-          stroke_id: this.currentStroke.id,
-          type: 'point',
-          position: {
-            x: position.x,
-            y: position.y,
-            z: position.z
-          },
-          rotation: {
-            w: rotation.w,
-            x: rotation.x,
-            y: rotation.y,
-            z: rotation.z
-          },
-          pointerPosition: {
-            x: pointerPosition.x,
-            y: pointerPosition.y,
-            z: pointerPosition.z
-          },
-          sizeModifier: this.sizeModifier,
-          time: time
-        });
+        // window.events.push({
+        //   stroke_id: this.currentStroke.id,
+        //   type: 'point',
+        //   position: {
+        //     x: position.x,
+        //     y: position.y,
+        //     z: position.z
+        //   },
+        //   rotation: {
+        //     w: rotation.w,
+        //     x: rotation.x,
+        //     y: rotation.y,
+        //     z: rotation.z
+        //   },
+        //   pointerPosition: {
+        //     x: pointerPosition.x,
+        //     y: pointerPosition.y,
+        //     z: pointerPosition.z
+        //   },
+        //   sizeModifier: this.sizeModifier,
+        //   time: time
+        // });
         this.currentStroke.addPoint(position, rotation, pointerPosition, this.sizeModifier, time);
       }
     };
