@@ -25,29 +25,6 @@ AFRAME.registerComponent('paint-controls', {
     el.addEventListener('brushcolor-changed', function (evt) { self.changeBrushColor(evt.detail.color); });
 
     this.numberStrokes = 0;
-
-    document.addEventListener('stroke-started', function (event) {
-      if (event.detail.entity.components['paint-controls'] !== self) { return; }
-
-      self.numberStrokes++;
-
-      // 3 Strokes to hide
-      if (self.numberStrokes === 3) {
-        var object = { alpha: 1.0 };
-        var tween = new AFRAME.TWEEN.Tween(object)
-          .to({alpha: 0.0}, 4000)
-          .onComplete(function () {
-            self.buttonMeshes.tooltips.forEach(function (tooltip) {
-              tooltip.visible = false;
-            });
-          })
-          .delay(2000)
-          .onUpdate(function () {
-            self.buttonMeshes.tooltips[0].material.opacity = object.alpha;
-          });
-        tween.start();
-      }
-    });
   },
 
   changeBrushColor: function (color) {
