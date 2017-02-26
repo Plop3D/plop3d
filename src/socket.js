@@ -2,6 +2,7 @@
 
 var host = location.protocol + '//' + location.host;
 var socket = io(host);
+window.socket = socket;
 var stroke = null;
 var strokes = [];
 
@@ -10,6 +11,13 @@ document.addEventListener("DOMContentLoaded", function() {
   socket.on('alexa-plop', function(data) {
     brushSystem.addShape(data.shape);
   });
+  socket.on('stroke', function(data) {
+    brushSystem.addEvent(data);
+  })
+});
+
+socket.on('connect', function() {
+  socket.emit('room', { room: window.location.pathname.substr(6) });
 });
 
 // These are just some desktop and mobile device events.
@@ -27,7 +35,7 @@ for (var type in types) {
   document.addEventListener(type, relay);
 }
 
-function relay (event) {
+function relay(event) {
   var type = types[event.type];
 
   // Start or stop a stroke.
@@ -46,22 +54,22 @@ function relay (event) {
   var y = event.y || event.pageY;
   var z = event.z || event.pageZ || 0; // Doesn't actually exist now.
   var t = Date.now();
-  var data = {type: type, x: x, y: y, z: z, t: t};
+  var data = { type: type, x: x, y: y, z: z, t: t };
   socket.emit('event', data);
   stroke.add(x, y, z, t);
 }
 
-function Stroke () {
+function Stroke() {
   this.points = [];
 }
 
-function Point (x, y, z, t) {
+function Point(x, y, z, t) {
   this.x = x;
   this.y = y;
   this.z = z;
   this.t = t;
 }
 
-Stroke.prototype.add = function (x, y, z, t) {
+Stroke.prototype.add = function(x, y, z, t) {
   this.points.push(new Point(x, y, z, t));
 };
