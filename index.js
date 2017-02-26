@@ -2,7 +2,7 @@ var fs = require('fs');
 var http = require('http');
 var server = http.createServer(serve);
 var io = require('socket.io')(server);
-var port = 8080;
+var port = process.env.PORT || 8080;
 var ip = require('ip').address();
 
 // Start listening for requests.
