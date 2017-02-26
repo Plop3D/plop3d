@@ -17,14 +17,12 @@
       "**/vendor/**"
     ]
   },
-  "devDependencies": {
+  "dependencies": {
     "cross-env": "^2.0.1",
     "semistandard": "^9.0.0",
     "snazzy": "^4.0.1",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1"
-  },
-  "dependencies": {
+    "webpack-dev-server": "^1.16.1",
     "bouncy": "^3.2.2",
     "ip": "^1.1.4",
     "socket.io": "^1.7.3",
