@@ -179,6 +179,19 @@ function PDollarRecognizer() // constructor
         new Point(100, 100, 3), new Point(100, 0, 3),
         new Point(100, 0, 4), new Point(0, 0, 4)
     )));
+
+    var circle = [];
+    var angle = (2 * Math.PI) / 10;
+
+    // soh cah toa
+    // |\
+    //O| \ H
+    // |__\
+    //   A
+    for (var i = 0; i < 10; i++) {
+        50 * Math.tan(angle)
+    }
+
     console.log(this.PointClouds);
 
     //

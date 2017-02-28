@@ -10,7 +10,6 @@ module.exports = {
     CalculateNormal: calculateNormal,
     ProjectPointOntoPlane: projectPointOntoPlane,
     LookAtEvent: lookAtEvent,
-    CalculatePlaneProjection: calculatePlaneProjection,
     DetectShape: detectShape
 };
 
@@ -47,19 +46,23 @@ function projectPointOntoPlane (plane, point) {
 }
 
 function lookAtEvent() {
-    // Import the data set, probably make this the entry point and the dataset is pass as an event object
-    var line = events.GetSquare();
 
+}
+
+function extractPositions(strokeSet) {
     // Extract the position objects into a standalone array
     var positions = [];
-    line.forEach(function (stroke) {
+    strokeSet.forEach(function (stroke) {
         if (stroke.position) {
             var position = stroke.position;
             var positionVector = new THREE.Vector3(position.x, position.y, position.z);
             positions.push(positionVector);
         }
     });
+    return positions;
+}
 
+function calculatePlane(positions) {
     // Calculate a plane using three points equally interspersed through the data
     var plane = new THREE.Plane();
     var oneThirdLength = Math.floor(positions.length/3);
@@ -71,7 +74,10 @@ function lookAtEvent() {
     // console.log(positions[twoThirdsLength]);
     plane.setFromCoplanarPoints(positions[0], positions[oneThirdLength], positions[twoThirdsLength]);
     // console.log(plane);
+    return plane;
+}
 
+function accuracyOfPlane(plane, positions) {
     // Determine if the plane is a good fit.
     var distancesFromPlane = [];
     positions.forEach(function (position) {
@@ -80,15 +86,23 @@ function lookAtEvent() {
     });
 
     // console.log(distancesFromPlane.sort());
+
     var standardDeviation = math.std(distancesFromPlane);
     var mean = math.mean(distancesFromPlane);
     var median = math.median(distancesFromPlane);
     var max = Math.max.apply(null, distancesFromPlane);
+
+    // Need to weight each attribute of score equally
+    var score = (standardDeviation + mean + median);
     // console.log(standardDeviation);
     // console.log(mean);
     // console.log(median);
     // console.log(max);
 
+    return score;
+}
+
+function projectedPointsOnto2dPlane (plane, positions) {
     // Project points onto plane
     var projectedPoints = [];
     positions.forEach(function (position) {
@@ -120,19 +134,17 @@ function lookAtEvent() {
         positions2d.push(point2d);
     });
 
-    var pointCloud = new PointCloudP("line", positions2d);
+    return positions2d;
+}
 
+function detectShape(strokeSet) {
+    var positions = extractPositions(strokeSet);
+    var plane = calculatePlane(positions);
+    var score = accuracyOfPlane(plane, positions);
+    var positions2d = projectedPointsOnto2dPlane(plane, positions);
     var recognizer = new dollarP.Recognizer;
     var recoResult = recognizer.Recognize(positions2d);
     console.log(recoResult);
 
-}
-
-function calculatePlaneProjection(planeNormal, projectVector) {
-    return projectVector.projectOnPlane(planeNormal);
-}
-
-function detectShape(strokeSet) {
-    var result = "";
-    return result;
+    return recoResult.Name;
 }
