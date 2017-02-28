@@ -22,7 +22,8 @@ var rooms = {};
  * NOTE: This is inefficient because it reads from disk on each request.
  */
 function serve (request, response) {
-  var url = request.url;
+  // TODO: Figure out why URLs are appending strangely.
+  var url = request.url.replace('assets/models//', '');
   var rel = url.substr(1);
   var ext = rel.replace(/^.*\./, '');
   var type = mime[ext] || mime.html;
@@ -53,6 +54,7 @@ function serve (request, response) {
   }
   fs.readFile(path, function (error, content) {
     if (error) {
+      console.error('404 ' + request.url);
       response.statusCode = 404;
       return response.end('Page not found');
     }

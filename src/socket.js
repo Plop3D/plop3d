@@ -13,7 +13,7 @@ var skies = ['dom', 'forest', 'gallery', 'venice', 'prague', 'office'];
 
 document.addEventListener('DOMContentLoaded', function () {
   var sky = skies.indexOf(room) > -1 ? room : 'prague';
-  document.querySelector('#skymap').src = '/assets/images/' + sky + '.jpg';
+  document.querySelector('#skymap').src = '/assets/sky/' + sky + '.jpg';
 
   scene = document.querySelector('a-scene');
   var brushSystem = scene.systems.brush;
