@@ -229,7 +229,7 @@ AFRAME.registerSystem('brush', {
         event.brush,
         new THREE.Color().fromArray([event.color.r, event.color.g, event.color.b]),
         event.size,
-        true
+        event.strokeId
       );
       strks[event.strokeId] = stroke;
     } else {
@@ -243,7 +243,42 @@ AFRAME.registerSystem('brush', {
     if(emit)
       window.socket.emit('stroke', event);
   },
-  addNewStroke: function(brushName, color, size, not_emit) {
+  replace: function(event){
+    for (var i = 0; i < this.strokes.length; i++) {
+      var stroke = this.strokes[i];
+      for(var j = 0; j < event.strokes_to_remove.length; j++){
+        if(event.strokes_to_remove[j] == stroke.id){
+          var entity = stroke.entity;
+          entity.parentNode.removeChild(entity);
+          // TODO: NICK: Remove from strokes list
+          break;
+        }
+      }
+    }
+    this.createShape(event.shape, event.points);
+  },
+  createShape: function(shape, points) {
+    if(shape == 'square'){
+      var brush = document.querySelector('#left-hand').components.brush;
+      var material = new THREE.MeshStandardMaterial({
+        color: brush.data.color,
+        roughness: 0.5,
+        metalness: 0.5,
+        side: THREE.DoubleSide,
+        shading: THREE.FlatShading
+      });
+      var geometry = new THREE.BoxGeometry(1, 1, 0.05);
+      var box = new THREE.Mesh(geometry, material);
+
+      var sca = 0.5 * this.data.size;
+      box.scale.set(sca, sca, sca);
+      box.position.copy(pointerPosition);
+      box.rotation.copy(orientation);
+
+      brush.object3D.add(box);
+    }
+  },
+  addNewStroke: function(brushName, color, size, strokeId) {
     var Brush = this.getBrushByName(brushName);
     if (!Brush) {
       var newBrushName = Object.keys(AFRAME.BRUSHES)[0];
@@ -257,10 +292,10 @@ AFRAME.registerSystem('brush', {
     stroke.init(color, size);
     this.strokes.push(stroke);
 
-    if (not_emit === true) {
+    if (strokeId !== undefined) {
       stroke.not_emit = true;
     } else {
-      var strokeId = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
+      strokeId = Date.now().toString() + '_' + Math.floor(Math.random() * 1000);
       window.socket.emit('stroke', {
         type: 'stroke',
         strokeId: strokeId,
@@ -272,8 +307,8 @@ AFRAME.registerSystem('brush', {
         },
         size: size
       });
-      stroke.id = strokeId;
     }
+    stroke.id = strokeId;
 
     var entity = document.createElement('a-entity');
     entity.className = "a-stroke";

@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
   socket.on('stroke', function (data) {
     brushSystem.addEvent(data);
   });
+  socket.on('replace', function(data) {
+    brushSystem.replace(data);
+  });
   socket.on('disconnect', function () {
     disconnected = true;
   });
