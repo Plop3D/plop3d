@@ -1,5 +1,5 @@
 var math = require('mathjs');
-var events = require('../events');
+var events = require('events');
 var dollarP = require('./dollarP');
 var PointP = dollarP.Point;
 var PointCloudP = dollarP.PointCloud;

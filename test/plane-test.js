@@ -1,5 +1,5 @@
 global.THREE = require("three.js");
-var planes = require('../src/planes');
+var planes = require('../planes');
 var strokeData = require('../events');
 var Point = planes.Point;
 var Plane = planes.Plane;

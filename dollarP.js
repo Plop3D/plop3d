@@ -189,7 +189,7 @@ function PDollarRecognizer() // constructor
     // |__\
     //   A
     for (var i = 0; i < 10; i++) {
-        50 * Math.tan(angle)
+        var x = 50 * Math.tan(angle)
     }
 
     console.log(this.PointClouds);
