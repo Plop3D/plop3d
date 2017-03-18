@@ -2,6 +2,8 @@ var scene, camera
 Cute.ready(function() {
   scene = Cute.one('a-scene')
   camera = Cute.one('a-camera')
+  assets = Cute.one('a-assets')
+  index = Cute.one('#index-finger')
 })
 
 Cute.on('touchend', function() {
@@ -69,4 +71,19 @@ socket.on('draw:move', function(data) {
 })
 
 socket.on('draw:end', function(data) {
+})
+
+var assetsMap = {}
+socket.on('thing', function(data) {
+  indexPosition = index.getAttribute('position')
+  var pos = camera.object3D.localToWorld(
+    new THREE.Vector3(indexPosition.x, indexPosition.y, indexPosition.z))
+  var position = [pos.x, pos.y, 0]
+
+  if (!assetsMap[data.name]) {
+    Cute.add(assets, 'a-asset-item#' + data.name + '-obj?src=' + data.path + '.obj')
+    Cute.add(assets, 'a-asset-item#' + data.name + '-mtl?src=' + data.path + '.mtl')
+    assetsMap[data.name] = true
+  }
+  Cute.add(scene, 'a-entity?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
 })
