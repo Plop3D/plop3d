@@ -20,13 +20,14 @@ for context in contexts
     buttons = ['main', 'duplicate', 'delete', 'add', 'subtract', 'intersect']
 
   opacity = (context === current ? 1 : 0)
-  a-entity.context.={context}-context(scale"={scale}" opacity="0")
+  display = (context === current ? 'block' : 'none')
+  a-entity.context.={context}-context(scale"={scale}" opacity="={opacity}" style="display:={display}")
     i = -1
     for button in buttons
       i = i + 1
       xyz = coords[i]
       color = colors[i]
-      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="0")
+      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="={opacity}" style="display:={display}")
 
         if button === 'shape'
           if mode === 'virtual'
