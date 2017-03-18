@@ -51,3 +51,20 @@ a-box.button {
 .intersect-button {
   background-color: purple;
 }
+
+.button-display {
+  color: white;
+  text-align: center;
+  height: 33%;
+  padding-top: 20px;
+}
+
+.button-icon {
+  font-size: 6em !important;
+  padding: 10px;
+}
+
+.button-text {
+  color: white;
+  text-align: center;
+}
