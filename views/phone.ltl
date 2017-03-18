@@ -1,4 +1,6 @@
 @page(title="Hand")
+  link(rel="stylesheet" href="/css/phone.css")
+  link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", rel="stylesheet", integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", crossorigin="anonymous")
   script(src="/js/phone.js")
   script(src="/js/menu.js")
   link(rel="stylesheet" href="/css/phone.css")
