@@ -1,24 +1,25 @@
 {
-  "name": "vr",
+  "name": "Plop3D",
   "version": "1.0.0",
   "description": "Fun with VR",
   "main": "index.js",
   "scripts": {
-    "test": "exam"
+    "test": "exam",
+    "start": "./node_modules/.bin/lighter-run"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zerious/vr.git"
+    "url": "git+https://github.com/plop3d/Plop3D.git"
   },
   "author": "Sam Eubank <sameubank@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zerious/vr/issues"
+    "url": "https://github.com/plop3d/Plop3D/issues"
   },
-  "homepage": "https://github.com/zerious/vr#readme",
   "dependencies": {
+    "aframe": "^0.5.0",
     "cedar": "^0.3.2",
-    "chug": "^0.4.1",
+    "chug": "^0.4.2",
     "cute": "^0.0.5",
     "express": "^4.14.1",
     "ip": "^1.1.4",

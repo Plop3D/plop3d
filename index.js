@@ -32,20 +32,3 @@ require('./lib/state')
 require('./lib/errors')
 require('./lib/io')
 var load = require('./lib/load')
-
-var stl = require('stl')
-var path = '/Users/sam/Documents/Making/BottleOpeners/Whistle/BLW-Coarse.stl'
-var object = stl.toObject(fs.readFileSync(path))
-var faces = object.facets
-for (var i = 0, l = faces.length; i < l; i++) {
-  var face = faces[i].verts
-  for (var j = 0; j < 3; j++) {
-    var point = face[j]
-    face[j] = [(point[0] + 100).toFixed(5) * 1, (point[1] - 100).toFixed(5) * 1, point[2].toFixed(5) * 1]
-  }
-  faces[i] = face
-}
-chug.routes.set('/whistle.json', {
-  mime: 'application/json',
-  content: JSON.scriptify(faces)
-})
