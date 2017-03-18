@@ -2,7 +2,7 @@
 coords = ['-0.125 0 -.25', '0.125 0 -.25', '-0.125 0 0', '0.125 0.01 0', '-0.125 0 .25', '0.125 0 .25']
 
 // Menu colors might look kitchy, but we can try it.
-colors = ['red', 'green', 'blue', 'orange', 'yellow', 'purple']
+colors = ['red', 'green', 'blue', 'orange', 'gold', 'purple']
 
 // By default, show the main menu.
 current = context || 'main'
@@ -39,51 +39,100 @@ for context in contexts
               path(stroke="#fff" fill="#fff" d="M32 8a12 12 1 1 0 .01 0z")
               path(stroke="#fff" fill="#fff" d="M8 36h20v20h-20z")
               path(stroke="#fff" fill="#fff" d="M32 58h26l-13-22z")
+              h2.button-text shape
 
         else if button === 'search'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-search
+            h2.button-text search
 
         else if button === 'file'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-file
+            h2.button-text file
 
         else if button === 'rooms'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-home
+            h2.button-text rooms
 
         else if button === 'sky'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-globe
+            h2.button-text sky
 
         else if button === 'settings'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-cog
+            h2.button-text settings
 
         else if button === 'main'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-arrow-left
+            h2.button-text back
 
         else if button === 'box'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-cube
+            h2.button-text box
 
         else if button === 'sphere'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-circle
+            h2.button-text sphere
 
         else if button === 'cylinder'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-circle-thin
+            h2.button-text cylinder
 
         else if button === 'cone'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-caret-up
+            h2.button-text cone
 
         else if button === 'torus'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-circle-o
+            h2.button-text torus
 
         else if button === 'duplicate'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-files-o
+            h2.button-text duplicate
 
         else if button === 'delete'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-trash
+            h2.button-text delete
 
         else if button === 'add'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-plus
+            h2.button-text +
 
         else if button === 'subtract'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-minus
+            h2.button-text subtract
 
         else if button === 'intersect'
           // TODO: Button content.
+          .button-display
+            i.button-icon.fa.fa-times
+            h2.button-text intersect
