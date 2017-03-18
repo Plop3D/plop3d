@@ -1,0 +1,70 @@
+/*
+In "actual" mode, we're not in an a-frame scene, so we hack a-frame elements
+to look like regular DIVs and such.
+*/
+a-entity.context {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+a-box.button {
+  display: block;
+  width: 50%;
+  height: 33%;
+  float: left;
+  border: 4px solid #000;
+}
+svg.icon {
+  width: 100%;
+  height: 100%;
+}
+a-box.button {
+  display:block;
+}
+.shape-button,
+.main-button {
+  background-color: red;
+}
+.search-button,
+.box-button,
+.duplicate-button {
+  background-color: green;
+}
+.file-button,
+.sphere-button,
+.delete-button {
+  background-color: blue;
+}
+.rooms-button,
+.cylinder-button,
+.add-button {
+  background-color: orange;
+}
+.sky-button,
+.cone-button,
+.subtract-button {
+  background-color: yellow;
+}
+.settings-button,
+.torus-button,
+.intersect-button {
+  background-color: purple;
+}
+
+.button-display {
+  color: white;
+  text-align: center;
+  height: 33%;
+  padding-top: 20px;
+}
+
+.button-icon {
+  font-size: 6em !important;
+  padding: 10px;
+}
+
+.button-text {
+  color: white;
+  text-align: center;
+}

@@ -1,27 +1,9 @@
 @page(title="Hand")
+  link(rel="stylesheet" href="/css/phone.css")
+  link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", rel="stylesheet", integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", crossorigin="anonymous")
   script(src="/js/phone.js")
   script(src="/js/menu.js")
-
-  // In "actual" mode, we're not in an a-frame scene, so we hack a-frame elements
-  // to look like regular DIVs and such.
-  style:
-    a-entity.context {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: #000;
-    }
-    a-box.button {
-      display: block;
-      width: 50%;
-      height: 33%;
-      float: left;
-      border: 4px solid #000;
-    }
-    svg.icon {
-      width: 100%;
-      height: 100%;
-    }
+  link(rel="stylesheet" href="/css/phone.css")
 
   // Show the current menu on an "actual" phone (as opposed to "virtual").
   @menu(context=context display="actual")

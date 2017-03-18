@@ -1,8 +1,9 @@
-var contexts = ['main', 'shape', 'selected']
 var isMobile = /Android|iP(hone|ad)/.test(navigator.userAgent)
 var touchStart = isMobile ? 'touchstart' : 'mousedown'
 var touchMove = isMobile ? 'touchmove' : 'mousemove'
 var touchEnd = isMobile ? 'touchend' : 'mouseup'
+
+var contexts = ['main', 'shape', 'selected']
 
 Cute.each(contexts, function (context) {
   Cute.on('a-box.' + context + '-button', touchEnd, function () {
@@ -19,16 +20,13 @@ Cute.on('.search-button', touchEnd, function () {
 socket.on('context', function (context) {
   // Hide all contexts in a-frame and on the real phone.
   Cute.all('.context,.context *', function (tag) {
-    console.log('hide', tag)
-    // Hide in a-frame and in Set opacity to zero for a-frame.
     Cute.attr(tag, 'opacity', 0)
-    Cute.css(tag, 'display', 'none')
+    Cute.attr(tag, 'style', 'display:none')
   })
+  // Show the context that we're activating.
   Cute.all('.' + context + '-context,.' + context + '-context *', function (tag) {
-    // Hide in a-frame and in Set opacity to zero for a-frame.
-    console.log('show', tag)
     Cute.attr(tag, 'opacity', 1)
-    Cute.css(tag, 'display', 'block')
+    Cute.attr(tag, 'style', 'display:block')
   })
 })
 
