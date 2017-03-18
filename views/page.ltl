@@ -1,0 +1,20 @@
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width,initial-scale=1,user-scalable=no")
+    meta(name="mobile-web-app-capable" content="yes")
+    meta(name="apple-mobile-web-app-capable" content="yes")
+    title ={title || 'VR'}
+    script(src="/socket.io.min.js")
+    script(src="/cute.js")
+    script(src="/js/socket.js")
+    if aframe
+      script(src="/aframe-master.js")
+    style:
+      * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+  body
+    : ={block}

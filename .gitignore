@@ -1,7 +1,9 @@
-.DS_Store
 .cache
-.idea/
-gh-pages/
+.idea
+.log
+.project
+.DS_Store
+coverage
 node_modules
-npm-debug.log*
-build.js
+npm-debug.log
+scripts/views.js

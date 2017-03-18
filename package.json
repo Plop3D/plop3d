@@ -1,39 +1,39 @@
 {
-  "name": "a-painter",
-  "version": "0.1.0",
-  "description": "A-Painter",
+  "name": "vr",
+  "version": "1.0.0",
+  "description": "Fun with VR",
+  "main": "index.js",
   "scripts": {
-    "proxy": "node proxy",
-    "build": "cross-env NODE_ENV=production webpack",
-    "postinstall": "webpack",
-    "dev": "lighter-run",
-    "webpack": "webpack-dev-server --host 0.0.0.0",
-    "start": "cross-env NODE_ENV=production webpack;node index",
-    "lint": "semistandard -v | snazzy",
     "test": "exam"
   },
-  "repository": "aframevr/a-painter",
-  "license": "MIT",
-  "semistandard": {
-    "ignore": [
-      "**/vendor/**"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zerious/vr.git"
   },
+  "author": "Sam Eubank <sameubank@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zerious/vr/issues"
+  },
+  "homepage": "https://github.com/zerious/vr#readme",
   "dependencies": {
-    "bouncy": "^3.2.2",
-    "cross-env": "^2.0.1",
-    "exam": "^2.1.0",
+    "cedar": "^0.3.2",
+    "chug": "^0.4.1",
+    "cute": "^0.0.5",
+    "express": "^4.14.1",
     "ip": "^1.1.4",
-    "lighter-mime": "^1.0.0",
+    "lighter-config": "^1.1.0",
+    "lighter-json": "^2.0.0",
     "lighter-run": "^1.1.0",
     "lighter-spawn": "^1.0.0",
-    "mathjs": "^3.9.3",
-    "semistandard": "^9.0.0",
-    "snazzy": "^4.0.1",
+    "lighter-type": "^2.2.1",
+    "ltl": "^0.3.1",
     "socket.io": "^1.7.3",
-    "three.js": "^0.77.1",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1",
-    "yargs": "^6.6.0"
+    "stl": "^1.1.1",
+    "three": "^0.84.0",
+    "webvr-polyfill": "^0.9.25"
+  },
+  "devDependencies": {
+    "exam": "^2.1.0"
   }
 }

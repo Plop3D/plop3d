@@ -1,14 +1,12 @@
 {
   "lighterRun": {
     "live": [
-      "assets",
-      "brushes",
-      "css",
-      "src",
-      "build.js",
-      "index.html",
-      "room.html",
-      "webpack.config.js"
+      "public",
+      "vendor",
+      "views"
+    ],
+    "watchDirs": [
+      "/Users/sam/Projects"
     ]
   }
 }

@@ -1,113 +1,51 @@
-var fs = require('fs');
-var http = require('http');
-var mime = require('lighter-mime');
-var server = http.createServer(serve);
-var io = require('socket.io')(server);
-var port = process.env.PORT || 8080;
-var ip = require('ip').address();
-var spawn = require('lighter-spawn');
-var Cache = require('lighter-lru-cache');
-var cache = new Cache({length: function (i) { return i.length; }, max: 1e9 });
+var express = require('express')
+var http = require('http')
+var https = require('https')
+var fs = require('fs')
+var chug = require('chug')
+var JSON = require('lighter-json')
+var ip = require('ip').address()
+var app = express()
+var io = new (require('socket.io'))()
 
-// Start listening for requests.
-server.listen(port);
-console.log('Listening at http://' + ip + ':' + port);
-build();
+var key = fs.readFileSync('config/ssl.key')
+var cert = fs.readFileSync('config/ssl.crt')
+var ports = [8888, 8443]
 
-var rooms = {};
+app.config = require('lighter-config')
+global.app = app
+global.io = io
+global.log = require('cedar')()
 
-/**
- * Handle an HTTP request for a static resource.
- * NOTE: This is insecure because it reads and serves any repo file.
- * NOTE: This is inefficient because it reads from disk on each request.
- */
-function serve (request, response) {
-  // TODO: Figure out why URLs are appending strangely.
-  var url = request.url.replace('assets/models//', '');
-  var rel = url.substr(1);
-  var ext = rel.replace(/^.*\./, '');
-  var type = mime[ext] || mime.html;
-  var isImage = /image/.test(type);
-  var path = rel || 'index.html';
-  var parts = rel.split('/');
-  var section = parts[0];
-  switch (section) {
-    case 'room':
-      path = 'room.html';
-      break;
-    case 'plop':
-      var name = parts[2];
-      var room = rooms[parts[2]];
-      if (room) {
-        var shape = parts[1];
-        console.log('Plop ' + shape + ' in ' + name + '(' + room.length + ')');
-        room.forEach(function (client) {
-          client.emit('plop', shape);
-        });
-      }
-      return response.end('OK');
+ports.forEach(function (port, ssl) {
+  var server = ssl
+    ? https.createServer({key: key, cert: cert}, app)
+    : http.createServer(app)
+
+  server.listen(port, function () {
+    log('Listening at ' + ('http://' + ip + ':' + port + '/').cyan)
+  })
+  io.attach(server)
+})
+
+require('./lib/state')
+require('./lib/errors')
+require('./lib/io')
+var load = require('./lib/load')
+
+var stl = require('stl')
+var path = '/Users/sam/Documents/Making/BottleOpeners/Whistle/BLW-Coarse.stl'
+var object = stl.toObject(fs.readFileSync(path))
+var faces = object.facets
+for (var i = 0, l = faces.length; i < l; i++) {
+  var face = faces[i].verts
+  for (var j = 0; j < 3; j++) {
+    var point = face[j]
+    face[j] = [(point[0] + 100).toFixed(5) * 1, (point[1] - 100).toFixed(5) * 1, point[2].toFixed(5) * 1]
   }
-  response.setHeader('Content-Type', type);
-  var content = cache.get(path);
-  if (content) {
-    return response.end(content);
-  }
-  fs.readFile(path, function (error, content) {
-    if (error) {
-      console.error('404 ' + request.url);
-      response.statusCode = 404;
-      return response.end('Page not found');
-    }
-    if (isImage) {
-      cache.set(path, content);
-      var utc = (new Date(1e13)).toUTCString();
-      response.setHeader('Expires', utc);
-    }
-    response.end(content);
-  });
+  faces[i] = face
 }
-
-io.on('connection', function (client) {
-  client.on('stroke', function (data) {
-    var room = client.room;
-    for (var i = 0, l = room.length; i < l; i++) {
-      var peer = room[i];
-      if (peer.id !== client.id) {
-        peer.emit('stroke', data);
-      }
-    }
-  });
-
-  client.on('join', function (name) {
-    var room = rooms[name] || (rooms[name] = []);
-    client.room = room;
-    room.push(client);
-    console.log('Joined ' + name + '(' + room.length + '): ' + client.id);
-    client.on('disconnect', function () {
-      for (var i = 0, l = room.length; i < l; i++) {
-        if (room[i] === client) {
-          room.splice(i, 1);
-          break;
-        }
-      }
-      console.log('Left ' + name + '(' + room.length + '): ' + client.id);
-    });
-  });
-});
-
-// Listen for lighter-run changes.
-process.stdin.on('data', function (chunk) {
-  try {
-    var change = JSON.parse(chunk.toString());
-    if (!/\/build\.js$/.test(change.path)) {
-      build();
-    }
-  } catch (ignore) {
-  }
-});
-
-function build () {
-  spawn('webpack').on('out', function (data) {
-    io.emit('reload');
-  });
-}
+chug.routes.set('/whistle.json', {
+  mime: 'application/json',
+  content: JSON.scriptify(faces)
+})

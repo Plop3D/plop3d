@@ -1,0 +1,17 @@
+width = 320
+height = 240
+@page(title="Fingers")
+  script(src="/js/colors.js")
+  script(src="/js/fingers.js")
+  video#video(width="={width}" height="={height}" muted)
+  canvas#canvas(width="={width}" height="={height}")
+  style:
+    video, canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: ={width}px;
+      height: ={height}px;
+      border: 0;
+      margin: 0;
+    }

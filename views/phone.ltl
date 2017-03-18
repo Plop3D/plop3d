@@ -1,0 +1,2 @@
+@page(title="Hand")
+  script(src="/js/phone.js")
