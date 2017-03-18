@@ -23,7 +23,8 @@ ports.forEach(function (port, ssl) {
     : http.createServer(app)
 
   server.listen(port, function () {
-    log('Listening at ' + ('http://' + ip + ':' + port + '/').cyan)
+    var protocol = ssl ? 'https:' : 'http:'
+    log('Listening at ' + (protocol + '//' + ip + ':' + port + '/').cyan)
   })
   io.attach(server)
 })
