@@ -1,2 +1,27 @@
 @page(title="Hand")
   script(src="/js/phone.js")
+  script(src="/js/menu.js")
+
+  // In "actual" mode, we're not in an a-frame scene, so we hack a-frame elements
+  // to look like regular DIVs and such.
+  style:
+    a-entity.context {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+    a-box.button {
+      display: block;
+      width: 50%;
+      height: 33%;
+      float: left;
+      border: 4px solid #000;
+    }
+    svg.icon {
+      width: 100%;
+      height: 100%;
+    }
+
+  // Show the current menu on an "actual" phone (as opposed to "virtual").
+  @menu(context=context display="actual")

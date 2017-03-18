@@ -1,0 +1,89 @@
+// X, Y, Z coordinates for 6 menu items if in VR.
+coords = ['-0.125 0 -.25', '0.125 0 -.25', '-0.125 0 0', '0.125 0.01 0', '-0.125 0 .25', '0.125 0 .25']
+
+// Menu colors might look kitchy, but we can try it.
+colors = ['red', 'green', 'blue', 'orange', 'yellow', 'purple']
+
+// By default, show the main menu.
+current = context || 'main'
+
+// Add all menus so they can be shown later.
+contexts = ['main', 'shape', 'selected']
+
+for context in contexts
+
+  if context === 'main'
+    buttons = ['shape', 'search', 'file', 'rooms', 'sky', 'settings']
+  else if context === 'shape'
+    buttons = ['main', 'box', 'sphere', 'cylinder', 'cone', 'torus']
+  else if context === 'selected'
+    buttons = ['main', 'duplicate', 'delete', 'add', 'subtract', 'intersect']
+
+  opacity = (context === current ? 1 : 0)
+  display = (context === current ? 'block' : 'none')
+  a-entity.context.={context}-context(scale"={scale}" opacity="0" style="display:={display}")
+    i = -1
+    for button in buttons
+      i = i + 1
+      xyz = coords[i]
+      color = colors[i]
+      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="0" style="background:={color};display:={display}")
+
+        if button === 'shape'
+          if mode === 'virtual'
+            a-sphere(color="white" radius="0.05" position="0 0.05 -0.05" opacity="0")
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="0")
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="0")
+          else
+            svg(viewBox="0 0 64 64")
+              path(stroke="#fff" fill="#fff" d="M32 8a12 12 1 1 0 .01 0z")
+              path(stroke="#fff" fill="#fff" d="M8 36h20v20h-20z")
+              path(stroke="#fff" fill="#fff" d="M32 58h26l-13-22z")
+
+        else if button === 'search'
+          // TODO: Button content.
+
+        else if button === 'file'
+          // TODO: Button content.
+
+        else if button === 'rooms'
+          // TODO: Button content.
+
+        else if button === 'sky'
+          // TODO: Button content.
+
+        else if button === 'settings'
+          // TODO: Button content.
+
+        else if button === 'back'
+          // TODO: Button content.
+
+        else if button === 'box'
+          // TODO: Button content.
+
+        else if button === 'sphere'
+          // TODO: Button content.
+
+        else if button === 'cylinder'
+          // TODO: Button content.
+
+        else if button === 'cone'
+          // TODO: Button content.
+
+        else if button === 'torus'
+          // TODO: Button content.
+
+        else if button === 'duplicate'
+          // TODO: Button content.
+
+        else if button === 'delete'
+          // TODO: Button content.
+
+        else if button === 'add'
+          // TODO: Button content.
+
+        else if button === 'subtract'
+          // TODO: Button content.
+
+        else if button === 'intersect'
+          // TODO: Button content.

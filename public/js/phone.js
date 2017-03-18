@@ -1,7 +1,7 @@
 var data2 = {}
 var data = {}
 var body = Cute.one('body')
-var pre = Cute.add(body, 'pre')
+// var pre = Cute.add(body, 'pre')
 
 var agent = navigator.userAgent
 var phone = (/Android/.test(navigator.userAgent) ? 'left' : 'right')
@@ -29,7 +29,7 @@ Cute.on(window, 'deviceorientation', function (type, event) {
   }
   socket.emit('tilt', tilt)
   data.tilt = tilt
-  show()
+  // show()
 })
 
 // Acceleration baseline.
@@ -50,5 +50,5 @@ Cute.on(window, 'devicemotion', function (type, event) {
   }
   ab.s = s
   data.acceleration = d
-  show()
+  // show()
 })
