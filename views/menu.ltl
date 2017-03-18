@@ -20,8 +20,7 @@ for context in contexts
     buttons = ['main', 'duplicate', 'delete', 'add', 'subtract', 'intersect']
 
   opacity = (context === current ? 1 : 0)
-  display = (context === current ? 'block' : 'none')
-  a-entity.context.={context}-context(scale"={scale}" opacity="0" style="display:={display}")
+  a-entity.context.={context}-context(scale"={scale}" opacity="0")
     i = -1
     for button in buttons
       i = i + 1
