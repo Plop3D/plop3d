@@ -78,7 +78,7 @@ socket.on('thing', function(data) {
   indexPosition = index.getAttribute('position')
   var pos = camera.object3D.localToWorld(
     new THREE.Vector3(indexPosition.x, indexPosition.y, indexPosition.z))
-  var position = [pos.x, pos.y, 0]
+  var position = [pos.x, 0, pos.z]
 
   if (!assetsMap[data.name]) {
     Cute.add(assets, 'a-asset-item#' + data.name + '-obj?src=' + data.path + '.obj')

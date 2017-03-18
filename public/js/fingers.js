@@ -25,7 +25,7 @@ Cute.ready(function () {
       var size = Math.max(shape.size, 1) / width
       var x = (0.5 - shape.x / width) / size / 8
       var y = (0.5 - shape.y / height) / size / 8
-      var z = 0.2 / size - 3
+      var z = size / 0.2 - 3
       var finger = fingers[shape.color]
       var n = Math.min(++finger.n, smoothing)
       finger.x += (x - finger.x) / n
