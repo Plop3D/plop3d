@@ -19,9 +19,6 @@ svg.icon {
   width: 100%;
   height: 100%;
 }
-a-box.button {
-  display:block;
-}
 .shape-button,
 .main-button {
   background-color: red;

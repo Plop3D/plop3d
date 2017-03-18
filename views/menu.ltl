@@ -20,13 +20,14 @@ for context in contexts
     buttons = ['main', 'duplicate', 'delete', 'add', 'subtract', 'intersect']
 
   opacity = (context === current ? 1 : 0)
-  a-entity.context.={context}-context(scale"={scale}" opacity="0")
+  display = (context === current ? 'block' : 'none')
+  a-entity.context.={context}-context(scale"={scale}" opacity="={opacity}" style="display:={display}")
     i = -1
     for button in buttons
       i = i + 1
       xyz = coords[i]
       color = colors[i]
-      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="0")
+      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="={opacity}" style="display:={display}")
 
         if button === 'shape'
           if mode === 'virtual'
@@ -41,97 +42,129 @@ for context in contexts
               h2.button-text shape
 
         else if button === 'search'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-search
-            h2.button-text search
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-search
+              h2.button-text search
 
         else if button === 'file'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-file
-            h2.button-text file
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-file
+              h2.button-text file
 
         else if button === 'rooms'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-home
-            h2.button-text rooms
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-home
+              h2.button-text rooms
 
         else if button === 'sky'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-globe
-            h2.button-text sky
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-globe
+              h2.button-text sky
 
         else if button === 'settings'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-cog
-            h2.button-text settings
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-cog
+              h2.button-text settings
 
         else if button === 'main'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-arrow-left
-            h2.button-text back
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-arrow-left
+              h2.button-text back
 
         else if button === 'box'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-cube
-            h2.button-text box
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-cube
+              h2.button-text box
 
         else if button === 'sphere'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-circle
-            h2.button-text sphere
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-circle
+              h2.button-text sphere
 
         else if button === 'cylinder'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-circle-thin
-            h2.button-text cylinder
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-circle-thin
+              h2.button-text cylinder
 
         else if button === 'cone'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-caret-up
-            h2.button-text cone
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-caret-up
+              h2.button-text cone
 
         else if button === 'torus'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-circle-o
-            h2.button-text torus
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-circle-o
+              h2.button-text torus
 
         else if button === 'duplicate'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-files-o
-            h2.button-text duplicate
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-files-o
+              h2.button-text duplicate
 
         else if button === 'delete'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-trash
-            h2.button-text delete
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-trash
+              h2.button-text delete
 
         else if button === 'add'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-plus
-            h2.button-text +
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-plus
+              h2.button-text +
 
         else if button === 'subtract'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-minus
-            h2.button-text subtract
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-minus
+              h2.button-text subtract
 
         else if button === 'intersect'
-          // TODO: Button content.
-          .button-display
-            i.button-icon.fa.fa-times
-            h2.button-text intersect
+          if mode === 'virtual'
+            // TODO: Virtual button content.
+          else
+            .button-display
+              i.button-icon.fa.fa-times
+              h2.button-text intersect
