@@ -27,7 +27,7 @@ for context in contexts
       i = i + 1
       xyz = coords[i]
       color = colors[i]
-      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="0" style="background:={color};display:={display}")
+      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="0")
 
         if button === 'shape'
           if mode === 'virtual'
@@ -55,7 +55,7 @@ for context in contexts
         else if button === 'settings'
           // TODO: Button content.
 
-        else if button === 'back'
+        else if button === 'main'
           // TODO: Button content.
 
         else if button === 'box'
