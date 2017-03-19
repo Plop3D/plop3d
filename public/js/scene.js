@@ -114,12 +114,22 @@ socket.on('thing', function(data) {
 })
 
 socket.on('search-results', function(results) {
-  for (var i = 0, l = results.length; i < l; i++) {
+  Cute.all(camera, '.search-results-box', Cute.remove)
+  var s = 1
+  var g = 20
+  var w = 2 * s + 1 * (s / g)
+  var h = 2 * s + 1 * (s / g)
+  for (var i = 0, l = results.length; i < 4 && i < l; i++) {
+    var x = (-w / 2) + (i % 2) * s + s / 2
+    var y = (h / 2) - Math.floor(i / 2) * s - s / 2
+    var size = (s - s / g)
+    var resultsBox = Cute.add(camera,
+      'a-box.search-results-box?opacity=0.3&width=' + size + '&height=' + size + '&depth=' + size +
+      '&position=' + x + ' ' + y + ' -2.5')
     var result = results[i]
-    var x = (i % 4) - 1.5
-    var y = 1.5 - Math.floor(i / 4)
-    var position = x + ' ' + y + ' -5'
-    Cute.add(camera, 'a-image?width=0.9&height=0.9&src=' + result.img + '&position=' + position)
+    resultsBox.result = result
+    // var position = x + ' ' + y + ' 0'
+    Cute.add(resultsBox, 'a-image?width=' + size + '&height=' + size + '&src=' + result.img + '&position= 0 0 0')
   }
 })
 
@@ -128,11 +138,21 @@ socket.on('shape', function(data) {
   var shape = data.name
   var attrs
   switch (shape) {
-    case 'cone': attrs = 'radius-bottom=0.3&radius-top=0&height=0.5'; break
-    case 'sphere': attrs = 'radius=0.3'; break
-    case 'box': attrs = 'width=0.5&height=0.5&depth=0.5'; break
-    case 'cylinder': attrs = 'radius=0.3&height=0.5'; break
-    case 'torus': attrs = 'radius=0.3&radius-tubular=0.1'; break
+    case 'cone':
+      attrs = 'radius-bottom=0.3&radius-top=0&height=0.5';
+      break
+    case 'sphere':
+      attrs = 'radius=0.3';
+      break
+    case 'box':
+      attrs = 'width=0.5&height=0.5&depth=0.5';
+      break
+    case 'cylinder':
+      attrs = 'radius=0.3&height=0.5';
+      break
+    case 'torus':
+      attrs = 'radius=0.3&radius-tubular=0.1';
+      break
   }
   Cute.add(scene, 'a-' + shape + '.operable?' + attrs +
     '&color=red&position=' + position.join(' '))
@@ -150,8 +170,14 @@ var lastGrab
 var selectedModel
 socket.on('grab:start', function(data) {
   lastGrab = data
-  var point = camera.object3D.localToWorld(
-    new THREE.Vector3(data.x, data.y, data.z))
+  var point = camera.object3D.localToWorld(new THREE.Vector3(data.x, data.y, data.z))
+  Cute.all('.search-results-box', function(searchBoxFrame){
+      var searchBox = new THREE.Box3().setFromObject(searchBoxFrame.object3D)
+      if (searchBox.containsPoint(point)) {
+        console.log(searchBoxFrame.result)
+      }
+  })
+
   var models = Cute.all('.operable')
   for (var i = 0; i < models.length; i++) {
     var box = new THREE.Box3().setFromObject(models[i].object3D)
@@ -160,13 +186,14 @@ socket.on('grab:start', function(data) {
       break;
     }
   }
+
 })
 
 socket.on('grab:move', function(data) {
   var model = selectedModel || camera
   if (lastGrab) {
     var pos = model.getAttribute('position');
-    if(window.isMobile){
+    if (window.isMobile) {
       pos.x += data.x - lastGrab.x
       pos.y += data.y - lastGrab.y
       pos.z += data.z - lastGrab.z
