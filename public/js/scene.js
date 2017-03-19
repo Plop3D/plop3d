@@ -53,11 +53,6 @@ socket.on('finger', function(data) {
   var finger = Cute.one('#' + data.name + '-finger')
   var position = data.x + ' ' + data.y + ' ' + data.z
   Cute.attr(finger, 'position', position)
-  Cute.attr(finger, 'visible', true)
-  clearTimeout(finger.timerToHide)
-  finger.timerToHide = setTimeout(function() {
-    Cute.attr(finger, 'visible', false)
-  }, 200)
 })
 
 var last
@@ -102,7 +97,7 @@ socket.on('draw:end', function(data) {
 })
 
 var assetsMap = {}
-socket.on('thing', function(data) {
+function plopThing(data) {
   var position = getTargetPosition()
   if (!assetsMap[data.name]) {
     Cute.add(assets, 'a-asset-item#' + data.name + '-obj?src=' + data.path + '.obj')
@@ -110,7 +105,9 @@ socket.on('thing', function(data) {
     assetsMap[data.name] = true
   }
   Cute.add(scene, 'a-entity.operable?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
-})
+}
+
+socket.on('thing', plopThing)
 
 socket.on('search-results', function(results) {
   Cute.all(camera, '.search-results-box', Cute.remove)
@@ -168,15 +165,31 @@ function getTargetPosition() {
 var lastGrab
 var selectedModel
 socket.on('grab:start', function(data) {
-  lastGrab = data
-  var point = camera.object3D.localToWorld(new THREE.Vector3(data.x, data.y, data.z))
-  Cute.all('.search-results-box', function(searchBoxFrame){
-      var searchBox = new THREE.Box3().setFromObject(searchBoxFrame.object3D)
-      if (searchBox.containsPoint(point)) {
-        console.log(searchBoxFrame.result)
-      }
-  })
+  var point = camera.object3D.localToWorld(
+    new THREE.Vector3(data.x, data.y, data.z))
 
+  var searchBoxFrames = Cute.all('.search-results-box')
+  var searchBoxFrame = null
+
+  for (var i = 0; i < searchBoxFrames.length; i++) {
+    searchBoxFrame = searchBoxFrames[i];
+    var searchBox = new THREE.Box3().setFromObject(searchBoxFrame.object3D)
+    if (searchBox.containsPoint(point)) {
+      break
+    }
+    searchBoxFrame = null;
+  }
+
+  if (searchBoxFrame) {
+    for (var i = 0; i < searchBoxFrame.result.paths.length; i++) {
+      plopThing(searchBoxFrame.result.paths[i])
+    }
+    selectedModel = lastGrab = undefined;
+    Cute.each(searchBoxFrames, Cute.remove);
+    return
+  }
+
+  lastGrab = data
   var models = Cute.all('.operable')
   for (var i = 0; i < models.length; i++) {
     var box = new THREE.Box3().setFromObject(models[i].object3D)
@@ -185,7 +198,6 @@ socket.on('grab:start', function(data) {
       break;
     }
   }
-
 })
 
 socket.on('grab:move', function(data) {
@@ -202,6 +214,5 @@ socket.on('grab:move', function(data) {
 })
 
 socket.on('grab:end', function(data) {
-  selectedModel = undefined;
-  lastGrab = undefined;
+  lastGrab = selectedModel = undefined;
 })
