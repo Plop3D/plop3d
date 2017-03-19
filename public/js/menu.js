@@ -25,7 +25,7 @@ function polyfill (map, key) {
     map['moz' + cap] || map['ms' + cap] || map['o' + cap]
 }
 
-var contexts = ['main', 'shape', 'selected']
+var contexts = ['main', 'shape', 'selected', 'sky']
 
 Cute.each(contexts, function(context) {
   Cute.on('a-box.' + context + '-button', touchEnd, function() {
@@ -60,6 +60,10 @@ Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })
 
+Cute.on('.sky-button', touchEnd, function() {
+  socket.emit('sky', { name: 'sky' })
+})
+
 Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
   Cute.on('.' + shape + '-button', touchEnd, function() {
     socket.emit('shape', {
@@ -72,8 +76,9 @@ Cute.on('.sphere-button', touchEnd, function() {
   socket.emit('shape', { name: 'sphere' });
 })
 
-// TODO: Figure out why context isn't switching.
-socket.on('context', function(context) {
+socket.on('context', setContext)
+
+function setContext (context) {
   // Hide all contexts in a-frame and on the real phone.
   Cute.all('.context,.context *', function(tag) {
     Cute.attr(tag, 'opacity', 0)
@@ -84,7 +89,7 @@ socket.on('context', function(context) {
     Cute.attr(tag, 'opacity', 1)
     Cute.attr(tag, 'style', 'display:block')
   })
-})
+}
 
 Cute.ready(function() {
   Cute.all('a-entity.menu *', function(tag) {
