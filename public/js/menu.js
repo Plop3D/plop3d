@@ -80,6 +80,10 @@ Cute.on('.search-button', touchEnd, function() {
   }
 })
 
+Cute.on('.rooms-button', touchEnd, function(){
+  socket.emit('clear');
+})
+
 Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })

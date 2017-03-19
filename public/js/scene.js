@@ -216,3 +216,7 @@ socket.on('grab:move', function(data) {
 socket.on('grab:end', function(data) {
   lastGrab = selectedModel = undefined;
 })
+
+socket.on('clear', function(){
+  Cute.all('.operable', Cute.remove);
+})
