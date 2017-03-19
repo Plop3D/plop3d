@@ -172,7 +172,7 @@ for context in contexts
 
         else if button === 'forest'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/forest.jpg" scale="1 1 -1" position="0 0.15 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="sky/forest.jpg")
@@ -180,7 +180,7 @@ for context in contexts
 
         else if button === 'pagoda'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/pagoda.jpg" scale="1 1 -1" position="0 0.15 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="sky/pagoda.jpg")
@@ -188,7 +188,7 @@ for context in contexts
 
         else if button === 'prague'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/prague.jpg" scale="1 1 -1" position="0 0.15 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="sky/prague.jpg")
@@ -196,7 +196,7 @@ for context in contexts
 
         else if button === 'reef'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/reef.jpg" scale="1 1 -1" position="0 0.15 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="sky/reef.jpg")
@@ -204,7 +204,7 @@ for context in contexts
 
         else if button === 'venice'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/venice.jpg" scale="1 1 -1" position="0 0.15 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="sky/venice.jpg")
