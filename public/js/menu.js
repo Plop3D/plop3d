@@ -60,7 +60,6 @@ Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })
 
-<<<<<<< HEAD
 Cute.on('.sky-button', touchEnd, function() {
   socket.emit('sky', { name: 'sky' })
 })
@@ -77,7 +76,9 @@ Cute.on('.sphere-button', touchEnd, function() {
   socket.emit('shape', { name: 'sphere' });
 })
 
-socket.on('context', function(context) {
+socket.on('context', setContext)
+
+function setContext (context) {
   // Hide all contexts in a-frame and on the real phone.
   Cute.all('.context,.context *', function(tag) {
     Cute.attr(tag, 'opacity', 0)
@@ -88,7 +89,7 @@ socket.on('context', function(context) {
     Cute.attr(tag, 'opacity', 1)
     Cute.attr(tag, 'style', 'display:block')
   })
-})
+}
 
 Cute.ready(function() {
   Cute.all('a-entity.menu *', function(tag) {
