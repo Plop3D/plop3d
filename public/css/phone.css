@@ -49,19 +49,29 @@ svg.icon {
   background-color: purple;
 }
 
+.shape-display {
+  width: 114px;
+  height: 134px;
+  display: block;
+  margin: auto;
+  padding: 0;
+}
+
 .button-display {
   color: white;
   text-align: center;
-  height: 33%;
+  height: 100%;
   padding-top: 20px;
 }
 
-.button-icon {
-  font-size: 6em !important;
-  padding: 10px;
+img.button-icon {
+  margin: auto;
+  height: 65%;
 }
 
 .button-text {
+  font-family: 'Ubuntu', sans-serif;
+  padding-top: 10px;
   color: white;
   text-align: center;
 }

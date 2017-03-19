@@ -5,6 +5,7 @@ html
     meta(name="mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-capable" content="yes")
     title ={title || 'VR'}
+    link(href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet")
     script(src="/socket.io.min.js")
     script(src="/cute.js")
     script(src="/js/socket.js")
