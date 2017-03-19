@@ -4,7 +4,6 @@ a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   iframe(src="/video" style="position:absolute;left:0;top:0;width:300px;height:200px;z-index:9999;" frameborder="0")
 
   script(src="/js/scene.js")
-  script(src="/js/menu.js")
 
   a-scene
 

@@ -10,6 +10,7 @@ a-entity.context {
 }
 a-box.button {
   display: block;
+  filter: brightness(90%);
   width: 50%;
   height: 33%;
   float: left;
@@ -20,33 +21,36 @@ svg.icon {
   height: 100%;
 }
 .shape-button,
-.main-button {
+.cylinder-button,
+.cone-button {
   background-color: red;
 }
 .search-button,
-.box-button,
 .duplicate-button {
-  background-color: green;
+  background-color: mediumseagreen;
 }
 .file-button,
-.sphere-button,
 .delete-button {
-  background-color: blue;
+  background-color: purple;
 }
 .rooms-button,
-.cylinder-button,
 .add-button {
-  background-color: orange;
+  background-color: darkorange;
 }
 .sky-button,
-.cone-button,
 .subtract-button {
-  background-color: yellow;
+  background-color: royalblue;
 }
 .settings-button,
-.torus-button,
-.intersect-button {
-  background-color: purple;
+.intersect-button,
+.main-button {
+  background-color: dimgray;
+}
+
+.sphere-button,
+.box-button,
+.torus-button {
+  background-color: maroon;
 }
 
 .shape-display {

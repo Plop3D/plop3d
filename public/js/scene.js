@@ -96,3 +96,28 @@ socket.on('thing', function(data) {
   }
   Cute.add(scene, 'a-entity?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
 })
+
+socket.on('shape', function(data) {
+  console.log('Putting down a shape! Shape: ', data.name)
+  indexPosition = index.getAttribute('position')
+  var pos = camera.object3D.localToWorld(
+    new THREE.Vector3(indexPosition.x, indexPosition.y, indexPosition.z))
+  var position = [pos.x, 0, pos.z]
+  console.log('position: ', position)
+  console.log('cone string: ','a-cone?color=red&radius-bottom=100&radius-top=0&height=100&position=' + position.join(' '))
+
+  var shape = data.name;
+  var entity = Cute.add(scene, 'a-entity.entitittiable?&position=' + position.join(' '))
+  if (shape === 'cone') {
+    var element = Cute.add(entity, 'a-cone.operable?color=red&radius-bottom=100&radius-top=0&height=100')
+    // Cute.attr(element, 'position', position.join(' '))
+  } else if (shape === 'sphere') {
+    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
+  } else if (shape === 'box') {
+    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
+  } else if (shape === 'cylinder') {
+    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
+  } else if (shape === 'torus') {
+    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
+  }
+})

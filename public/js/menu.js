@@ -1,23 +1,60 @@
+// Map experimental features in major browsers.
+polyfill(window, 'URL')
+polyfill(navigator, 'getUserMedia')
+polyfill(window, 'SpeechRecognition')
+
 var isMobile = /Android|iP(hone|ad)/.test(navigator.userAgent)
 var touchStart = isMobile ? 'touchstart' : 'mousedown'
 var touchMove = isMobile ? 'touchmove' : 'mousemove'
 var touchEnd = isMobile ? 'touchend' : 'mouseup'
 
+function polyfill (map, key) {
+  var cap = key[0].toUpperCase() + key.substr(1)
+  map[key] = map[key] || map['webkit' + cap] ||
+    map['moz' + cap] || map['ms' + cap] || map['o' + cap]
+}
+
 var contexts = ['main', 'shape', 'selected']
 
 Cute.each(contexts, function(context) {
   Cute.on('a-box.' + context + '-button', touchEnd, function() {
-    console.log('context', context)
     socket.emit('context', context)
   })
 })
 
 Cute.on('.search-button', touchEnd, function() {
-  alert('TODO: WebKit Speech Recognition')
+  if (window.SpeechRecognition) {
+    var speech = new SpeechRecognition()
+    speech.onresult = function (event) {
+      var text
+      var confidence = 0
+      var alternatives = []
+      Cute.each(event.results, function (candidates) {
+        Cute.each(candidates, function (candidate) {
+          if (candidate.confidence > confidence) {
+            confidence = candidate.confidence
+            text = candidate.transcript
+          } else {
+            alternatives.push(candidate.transcript)
+          }
+        })
+      })
+      socket.log('search', {text: text, alternatives: alternatives})
+    }
+    speech.start()
+  }
+})
+
+Cute.on('.file-button', touchEnd, function() {
+  socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })
 
 Cute.on('.cone-button', touchEnd, function() {
-  socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
+  socket.emit('shape', { name: 'cone' });
+})
+
+Cute.on('.sphere-button', touchEnd, function() {
+  socket.emit('shape', { name: 'sphere' });
 })
 
 // TODO: Figure out why context isn't switching.

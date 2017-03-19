@@ -1,13 +1,3 @@
-// Map experimental features in major browsers.
-function polyfill (map, key) {
-  var cap = key[0].toUpperCase + key.substr(1)
-  map[key] = map[key] || map['webkit' + cap] ||
-    map['moz' + cap] || map['ms' + cap] || map['o' + cap]
-}
-
-polyfill(window, 'URL')
-polyfill(navigator, 'getUserMedia')
-
 // TODO: REMOVE
 var keepGoing = true
 function end (data) {

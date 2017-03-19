@@ -9,6 +9,7 @@ html
     script(src="/socket.io.min.js")
     script(src="/cute.js")
     script(src="/js/socket.js")
+    script(src="/js/menu.js")
     if aframe
       script(src="/aframe-master.js")
     style:
