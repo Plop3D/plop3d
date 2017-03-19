@@ -60,8 +60,12 @@ Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })
 
-Cute.on('.cone-button', touchEnd, function() {
-  socket.emit('shape', { name: 'cone' });
+Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
+  Cute.on('.' + shape + '-button', touchEnd, function() {
+    socket.emit('shape', {
+      name: shape
+    })
+  })
 })
 
 Cute.on('.sphere-button', touchEnd, function() {
