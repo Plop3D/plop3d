@@ -1,9 +1,9 @@
 Cute.ready(function() {
   var canvas = Cute.one('#canvas')
 
-  var fingers = { Yellow: 'index', ForestGreen: 'thumb' }
+  var fingers = {Yellow: 'index', ForestGreen: 'thumb'}
 
-  var smoothing = 5
+  var smoothing = 2
   var scale = 5
   var width = canvas.offsetWidth
   var height = canvas.offsetHeight
@@ -18,27 +18,27 @@ Cute.ready(function() {
       n: 0
     }
   })
-  fingers.avg = { x: 0, y: 0, z: 0 }
+  fingers.avg = {x: 0, y: 0, z: 0}
 
   Cute.on(document, 'shapes', function(shapes) {
     Cute.each(shapes, function(shape) {
       var size = Math.max(shape.size, 1) / width
       var x, y, z
-      if(window.isMobile){
+      if (window.isMobile) {
         x = (shape.x / width - 0.5) / size / 8
-        y = (shape.y / height - 05) / size / 8
-        z = 5 * size - 3
+        y = (0.5 - shape.y / height) / size / 8
+        z = -0.2 / size
       }
       else {
         x = (0.5 - shape.x / width) / size / 8
         y = (0.5 - shape.y / height) / size / 8
-        z = 0.2 / size - 3
+        z = 0.2 / size - 6
       }
       var finger = fingers[shape.color]
       var n = Math.min(++finger.n, smoothing)
       finger.x += (x - finger.x) / n
       finger.y += (y - finger.y) / n
-      finger.z += (z - finger.z) / Math.min(++finger.n, smoothing * 5)
+      finger.z += (z - finger.z) / Math.min(++finger.n, smoothing * 3)
       socket.emit('finger', finger)
     })
     var index = fingers.index
@@ -53,7 +53,7 @@ Cute.ready(function() {
     }
     var gap = getDistance(index, thumb)
     var pointiness = thumb.z - index.z
-    var isPointing = (gap > 0.3 && gap < 1) && (pointiness > 0.2)
+    var isPointing = gap > 0.4 && pointiness > 0.3
     if (isPointing) {
       if (!isDrawing) {
         isDrawing = true
@@ -66,7 +66,7 @@ Cute.ready(function() {
       isDrawing = false
     }
 
-    var isPinched = gap < 0.3
+    var isPinched = gap < 0.2
     if (isPinched) {
       if (!isGrabbing) {
         isGrabbing = true

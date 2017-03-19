@@ -7,7 +7,7 @@ var agent = navigator.userAgent
 var phone = (/Android/.test(navigator.userAgent) ? 'left' : 'right')
 
 socket.on('connect', function() {
-  socket.emit('phone', { agent: agent, phone: phone })
+  socket.emit('phone', {agent: agent, phone: phone})
 })
 
 function show() {

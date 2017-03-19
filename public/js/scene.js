@@ -12,15 +12,14 @@ Cute.on('touchend', function() {
 })
 
 socket.on('phone', function(data) {
-  Cute.all('#' + data.phone + '-phone *', function(tag) {
-    Cute.attr(tag, 'opacity', 1)
+  Cute.all('#' + data.phone + '-phone', function(tag) {
+    Cute.attr(tag, 'visible', true)
   })
 })
 
 var lastCameraY;
 var lastPhoneY;
 socket.on('tilt', function(data) {
-  //console.log(data)
   if (camera) {
     var phone = Cute.one('#' + data.phone + '-phone')
     var rot = camera.getAttribute('rotation')
@@ -191,17 +190,12 @@ socket.on('grab:start', function(data) {
 
 socket.on('grab:move', function(data) {
   var model = selectedModel || camera
+  var speed = (model === camera) ? -5 : 1
   if (lastGrab) {
-    var pos = model.getAttribute('position');
-    if (window.isMobile) {
-      pos.x += data.x - lastGrab.x
-      pos.y += data.y - lastGrab.y
-      pos.z += data.z - lastGrab.z
-    } else {
-      pos.x -= data.x - lastGrab.x
-      pos.y -= data.y - lastGrab.y
-      pos.z -= data.z - lastGrab.z
-    }
+    var pos = model.getAttribute('position')
+    pos.x += speed * (data.x - lastGrab.x)
+    pos.y += speed * (data.y - lastGrab.y)
+    pos.z += speed * (data.z - lastGrab.z)
     Cute.attr(model, 'position', [pos.x, pos.y, pos.z].join(' '))
     lastGrab = data
   }

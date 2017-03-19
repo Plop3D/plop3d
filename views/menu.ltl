@@ -21,21 +21,21 @@ for context in contexts
   else if context === 'sky'
     buttons = ['main', 'forest', 'pagoda', 'prague', 'reef', 'venice']
 
-  opacity = (context === current ? 1 : 0)
+  visible = (context === current ? true : false)
   display = (context === current ? 'block' : 'none')
-  a-entity.context.={context}-context(scale"={scale}" opacity="={opacity}" style="display:={display}")
+  a-entity.context.={context}-context(visible="={visible}" style="display:={display}")
     i = -1
     for button in buttons
       i = i + 1
       xyz = coords[i]
       color = colors[i]
-      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}" opacity="={opacity}" style="display:={display}")
+      a-box.button.={button}-button(position="={xyz}" width="0.22" height="0.01" depth="0.22" color="={color}")
 
         if button === 'shape'
           if mode === 'virtual'
-            a-sphere(color="white" radius="0.05" position="0 0.05 -0.05" opacity="={opacity}")
-            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.042" opacity="={opacity}")
-            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.07" position="0.05 0.06 0.042" rotation="-90 0 0" opacity="={opacity}")
+            a-sphere(color="white" radius="0.05" position="0 0.05 -0.05")
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.042")
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.07" position="0.05 0.06 0.042" rotation="-90 0 0")
           else
             .button-display
               img.button-icon(src="icons/svg/shapes.svg")
@@ -43,8 +43,8 @@ for context in contexts
 
         else if button === 'search'
           if mode === 'virtual'
-            a-torus(radius="0.06" radius-tubular="0.01" arc="360" color="white" position="-0.02 0.04 -0.02" rotation="90 0 0" scale="1 1 1.5" opacity="={opacity}")
-            a-cylinder(color="white" radius="0.03" height="0.08" position="0.04 0.04 0.04" rotation="0 135 90" opacity="={opacity}")
+            a-torus(radius="0.06" radius-tubular="0.01" arc="360" color="white" position="-0.02 0.04 -0.02" rotation="90 0 0" scale="1 1 1.5")
+            a-cylinder(color="white" radius="0.03" height="0.08" position="0.04 0.04 0.04" rotation="0 135 90")
           else
             .button-display
               img.button-icon(src="icons/svg/search.svg")
@@ -52,7 +52,7 @@ for context in contexts
 
         else if button === 'file'
           if mode === 'virtual'
-            a-obj-model.menuIcons(src="/things/file.obj" position="0.00 -0.45 0.11" color="white" rotation="180 0 0" scale="0.007 0.007 0.007" opacity="={opacity}")
+            a-obj-model.menuIcons(src="/things/file.obj" position="0.00 -0.45 0.11" color="white" rotation="180 0 0" scale="0.007 0.007 0.007")
           else
             .button-display
               img.button-icon(src="icons/svg/file.svg")
@@ -60,7 +60,7 @@ for context in contexts
 
         else if button === 'rooms'
           if mode === 'virtual'
-            a-obj-model.menuIcons(src="/things/rooms.obj" position="0.21 -0.26 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01" opacity="={opacity}")
+            a-obj-model.menuIcons(src="/things/rooms.obj" position="0.21 -0.26 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01")
           else
             .button-display
               img.button-icon(src="icons/svg/door.svg")
@@ -68,7 +68,7 @@ for context in contexts
 
         else if button === 'sky'
           if mode === 'virtual'
-            a-obj-model.menuIcons(src="/things/sky.obj" position="-0.20 -0.67 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01" opacity="={opacity}")
+            a-obj-model.menuIcons(src="/things/sky.obj" position="-0.20 -0.67 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01")
           else
             .button-display
               img.button-icon(src="icons/svg/sky.svg")
@@ -76,7 +76,7 @@ for context in contexts
 
         else if button === 'settings'
           if mode === 'virtual'
-            a-obj-model.menuIcons(src="/things/settings.obj" position="0.17 -0.61 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01" opacity="={opacity}")
+            a-obj-model.menuIcons(src="/things/settings.obj" position="0.17 -0.61 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01")
           else
             .button-display
               img.button-icon(src="icons/svg/settings.svg")
@@ -84,7 +84,7 @@ for context in contexts
 
         else if button === 'main'
           if mode === 'virtual'
-            a-obj-model.menuIcons(src="/things/main.obj" position="-0.076 0.05 0.10" color="white" rotation="180 0 0" scale="0.004 0.004 0.004" opacity="={opacity}")
+            a-obj-model.menuIcons(src="/things/main.obj" position="-0.076 0.05 0.10" color="white" rotation="180 0 0" scale="0.004 0.004 0.004")
           else
             .button-display
               img.button-icon(src="icons/svg/back-arrow.svg")
@@ -92,7 +92,7 @@ for context in contexts
 
         else if button === 'box'
           if mode === 'virtual'
-            a-box(color="white" width="0.1" height="0.1" depth="0.1" position="0 0.05 0" opacity="={opacity}")
+            a-box(color="white" width="0.1" height="0.1" depth="0.1" position="0 0.05 0")
           else
             .button-display
               img.button-icon(src="icons/svg/box.svg")
@@ -100,7 +100,7 @@ for context in contexts
 
         else if button === 'sphere'
           if mode === 'virtual'
-            a-sphere(color="white" radius="0.06" position="0 0.05 0" opacity="={opacity}")
+            a-sphere(color="white" radius="0.06" position="0 0.05 0")
           else
             .button-display
               img.button-icon(src="icons/svg/sphere.svg")
@@ -108,7 +108,7 @@ for context in contexts
 
         else if button === 'cylinder'
           if mode === 'virtual'
-            a-cylinder(color="white" radius="0.06" height="0.1" position="0 0.05 0" rotation="0 0 0" opacity="={opacity}")
+            a-cylinder(color="white" radius="0.06" height="0.1" position="0 0.05 0" rotation="0 0 0")
           else
             .button-display
               img.button-icon(src="icons/svg/cylinder.svg")
@@ -116,7 +116,7 @@ for context in contexts
 
         else if button === 'cone'
           if mode === 'virtual'
-            a-cone(color="white" radius-bottom="0.06" radius-top="0" height="0.1" position="0 0.055 0" rotation="0 0 0" opacity="={opacity}")
+            a-cone(color="white" radius-bottom="0.06" radius-top="0" height="0.1" position="0 0.055 0" rotation="0 0 0")
           else
             .button-display
               img.button-icon(src="icons/svg/cone.svg")
@@ -124,7 +124,7 @@ for context in contexts
 
         else if button === 'torus'
           if mode === 'virtual'
-            a-torus(color="white" radius="0.06" radius-tubular="0.006" position="0 0.06 0" rotation="90 0 0" scale="1 1 1.5" opacity="={opacity}")
+            a-torus(color="white" radius="0.06" radius-tubular="0.006" position="0 0.06 0" rotation="90 0 0" scale="1 1 1.5")
           else
             .button-display
               img.button-icon(src="icons/svg/torus.svg")
@@ -172,7 +172,7 @@ for context in contexts
 
         else if button === 'forest'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/forest.jpg" scale="1 1 -1" position="0 0.15 0")
           else
             .button-display
               img.button-icon(src="sky/forest.jpg")
@@ -180,7 +180,7 @@ for context in contexts
 
         else if button === 'pagoda'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/pagoda.jpg" scale="1 1 -1" position="0 0.15 0")
           else
             .button-display
               img.button-icon(src="sky/pagoda.jpg")
@@ -188,7 +188,7 @@ for context in contexts
 
         else if button === 'prague'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/prague.jpg" scale="1 1 -1" position="0 0.15 0")
           else
             .button-display
               img.button-icon(src="sky/prague.jpg")
@@ -196,7 +196,7 @@ for context in contexts
 
         else if button === 'reef'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/reef.jpg" scale="1 1 -1" position="0 0.15 0")
           else
             .button-display
               img.button-icon(src="sky/reef.jpg")
@@ -204,7 +204,7 @@ for context in contexts
 
         else if button === 'venice'
           if mode === 'virtual'
-
+            a-entity(geometry="primitive:sphere; radius:0.13" material="src:sky/venice.jpg" scale="1 1 -1" position="0 0.15 0")
           else
             .button-display
               img.button-icon(src="sky/venice.jpg")

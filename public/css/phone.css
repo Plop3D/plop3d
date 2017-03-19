@@ -38,7 +38,9 @@ svg.icon {
   background-color: darkorange;
 }
 .sky-button,
-.subtract-button {
+.subtract-button,
+.prague-button,
+.reef-button {
   background-color: royalblue;
 }
 .settings-button,
@@ -46,13 +48,16 @@ svg.icon {
 .main-button {
   background-color: dimgray;
 }
-
 .sphere-button,
 .box-button,
 .torus-button {
   background-color: maroon;
 }
-
+.forest-button,
+.pagoda-button,
+.venice-button {
+  background-color: darkblue;
+}
 .shape-display {
   width: 114px;
   height: 134px;
@@ -60,19 +65,17 @@ svg.icon {
   margin: auto;
   padding: 0;
 }
-
 .button-display {
   color: white;
   text-align: center;
   height: 100%;
   padding-top: 20px;
+  overflow: hidden;
 }
-
 img.button-icon {
   margin: auto;
   height: 65%;
 }
-
 .button-text {
   font-family: 'Ubuntu', sans-serif;
   padding-top: 10px;
