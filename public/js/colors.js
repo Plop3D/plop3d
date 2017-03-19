@@ -133,7 +133,7 @@ Cute.ready(function () {
     for (n = 0; n < area; n++) {
       var pixel = pixels[n]
       var color = pixel.color
-      if (color && (pixel.fit > color.bestFit * 0.6)) {
+      if (color && (pixel.fit > color.bestFit * 0.3)) {
         if (!pixel.shape) {
           pixel.shape = new Shape(pixel)
         }
@@ -213,30 +213,23 @@ Cute.ready(function () {
           break
       }
     }
-    var radius = 0.8
-    var indexHue = 0.7
-    if ((h > indexHue && h < indexHue + radius) && d > 70) {
-      h -= indexHue + radius / 2
+    if ((h > 1.8 && h < 3) && d > 25) {
+      h -= 2.4
       f = d / (h * h + 0.1)
-      if (f > YELLOW.bestFit / 10) {
-        getColor.fit = f
-        if (f > YELLOW.bestFit) {
-          YELLOW.bestFit = f
-        }
-        return YELLOW
+      getColor.fit = f
+      if (f > GREEN.bestFit) {
+        GREEN.bestFit = f
       }
+      return GREEN
     }
-    var thumbHue = 2.0
-    if ((h > thumbHue && h < thumbHue + radius) && d > 45) {
-      h -= thumbHue + radius / 2
+    if ((h > 0.7 && h < 1.3) && d > 50) {
+      h -= 1
       f = d / (h * h + 0.1)
-      if (f > BLUE.bestFit / 10) {
-        getColor.fit = f
-        if (f > BLUE.bestFit) {
-          BLUE.bestFit = f
-        }
-        return BLUE
+      getColor.fit = f
+      if (f > YELLOW.bestFit) {
+        YELLOW.bestFit = f
       }
+      return YELLOW
     }
     return null
   }
@@ -266,5 +259,5 @@ var Color = Cute.type(function (index, name, hex) {
 var fingers = {}
 
 var YELLOW = new Color(0, 'Yellow')
-var BLUE = new Color(1, 'ForestGreen')
-var colors = [YELLOW, BLUE]
+var GREEN = new Color(1, 'ForestGreen')
+var colors = [YELLOW, GREEN]

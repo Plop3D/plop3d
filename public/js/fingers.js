@@ -3,7 +3,7 @@ Cute.ready(function() {
 
   var fingers = { Yellow: 'index', ForestGreen: 'thumb' }
 
-  var smoothing = 5
+  var smoothing = 2
   var scale = 5
   var width = canvas.offsetWidth
   var height = canvas.offsetHeight
@@ -38,7 +38,7 @@ Cute.ready(function() {
       var n = Math.min(++finger.n, smoothing)
       finger.x += (x - finger.x) / n
       finger.y += (y - finger.y) / n
-      finger.z += (z - finger.z) / Math.min(++finger.n, smoothing * 5)
+      finger.z += (z - finger.z) / Math.min(++finger.n, smoothing * 3)
       socket.emit('finger', finger)
     })
     var index = fingers.index
@@ -53,7 +53,7 @@ Cute.ready(function() {
     }
     var gap = getDistance(index, thumb)
     var pointiness = thumb.z - index.z
-    var isPointing = (gap > 0.3 && gap < 1) && (pointiness > 0.2)
+    var isPointing = (gap > 0.45 && gap < 1.5) && (pointiness > 0.3)
     if (isPointing) {
       if (!isDrawing) {
         isDrawing = true
@@ -66,7 +66,7 @@ Cute.ready(function() {
       isDrawing = false
     }
 
-    var isPinched = gap < 0.3
+    var isPinched = gap < 0.35
     if (isPinched) {
       if (!isGrabbing) {
         isGrabbing = true
