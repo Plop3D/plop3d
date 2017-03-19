@@ -2,7 +2,7 @@
 coords = ['-0.125 0 -.25', '0.125 0 -.25', '-0.125 0 0', '0.125 0.01 0', '-0.125 0 .25', '0.125 0 .25']
 
 // Menu colors might look kitchy, but we can try it.
-colors = ['red', 'green', 'blue', 'orange', 'gold', 'purple']
+colors = ['red', 'green', 'blue', 'orange', 'purple', 'darkgray']
 
 // By default, show the main menu.
 current = context || 'main'
@@ -35,11 +35,9 @@ for context in contexts
             a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="={opacity}")
             a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="={opacity}")
           else
-            svg(viewBox="0 0 64 64")
-              path(stroke="#fff" fill="#fff" d="M32 8a12 12 1 1 0 .01 0z")
-              path(stroke="#fff" fill="#fff" d="M8 36h20v20h-20z")
-              path(stroke="#fff" fill="#fff" d="M32 58h26l-13-22z")
-              h2.button-text shape
+            .button-display
+              img.button-icon(src="icons/svg/shapes.svg")
+              h2.button-text shapes
 
         else if button === 'search'
           if mode === 'virtual'
@@ -47,7 +45,7 @@ for context in contexts
             a-cylinder(color="white" radius="0.03" height="0.08" position="0.04 0.04 0.04" rotation="0 135 90" opacity="={opacity}")
           else
             .button-display
-              i.button-icon.fa.fa-search
+              img.button-icon(src="icons/svg/search.svg")
               h2.button-text search
 
         else if button === 'file'
@@ -55,7 +53,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-file
+              img.button-icon(src="icons/svg/file.svg")
               h2.button-text file
 
         else if button === 'rooms'
@@ -63,7 +61,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-home
+              img.button-icon(src="icons/svg/door.svg")
               h2.button-text rooms
 
         else if button === 'sky'
@@ -71,7 +69,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-globe
+              img.button-icon(src="icons/svg/sky.svg")
               h2.button-text sky
 
         else if button === 'settings'
@@ -79,7 +77,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-cog
+              img.button-icon(src="icons/svg/settings.svg")
               h2.button-text settings
 
         else if button === 'main'
@@ -87,47 +85,47 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-arrow-left
+              img.button-icon(src="icons/svg/back-arrow.svg")
               h2.button-text back
 
         else if button === 'box'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="0 0.05 0" opacity="0")
           else
             .button-display
-              i.button-icon.fa.fa-cube
+              img.button-icon(src="icons/svg/cube.svg")
               h2.button-text box
 
         else if button === 'sphere'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-sphere(color="white" radius="0.06" position="0 0.05 0" opacity="0")
           else
             .button-display
-              i.button-icon.fa.fa-circle
+              img.button-icon(src="icons/svg/sphere.svg")
               h2.button-text sphere
 
         else if button === 'cylinder'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-cylinder(color="white" radius="0.05" height="0.1" position="0 0.05 0" rotation="0 0 0" opacity="0")
           else
             .button-display
-              i.button-icon.fa.fa-circle-thin
+              img.button-icon(src="icons/svg/cylinder.svg")
               h2.button-text cylinder
 
         else if button === 'cone'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0 0.055 0" rotation="0 0 0" opacity="0")
           else
             .button-display
-              i.button-icon.fa.fa-caret-up
+              img.button-icon(src="icons/svg/cone.svg")
               h2.button-text cone
 
         else if button === 'torus'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-torus(color="white" radius="0.06" radius-tubular="0.006" position="0 0.06 0" rotation="90 0 0" opacity="0")
           else
             .button-display
-              i.button-icon.fa.fa-circle-o
+              img.button-icon(src="icons/svg/torus.svg")
               h2.button-text torus
 
         else if button === 'duplicate'

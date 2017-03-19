@@ -1,7 +1,7 @@
-Cute.ready(function () {
+Cute.ready(function() {
   var canvas = Cute.one('#canvas')
 
-  var fingers = {Yellow: 'index', DodgerBlue: 'thumb'}
+  var fingers = { Yellow: 'index', DodgerBlue: 'thumb' }
 
   var smoothing = 5
   var scale = 5
@@ -11,21 +11,21 @@ Cute.ready(function () {
   var isDrawing = false
   var isGrabbing = false
 
-  Cute.each(fingers, function (name, color) {
+  Cute.each(fingers, function(name, color) {
     fingers[name] = fingers[color] = {
       name: name,
       x: 0, y: 0, z: 0,
       n: 0
     }
   })
-  fingers.avg = {x: 0, y: 0, z: 0}
+  fingers.avg = { x: 0, y: 0, z: 0 }
 
-  Cute.on(document, 'shapes', function (shapes) {
-    Cute.each(shapes, function (shape) {
+  Cute.on(document, 'shapes', function(shapes) {
+    Cute.each(shapes, function(shape) {
       var size = Math.max(shape.size, 1) / width
       var x = (0.5 - shape.x / width) / size / 8
       var y = (0.5 - shape.y / height) / size / 8
-      var z = size / 0.2 - 3
+      var z = window.isMobile ? 5 * size - 3 : 0.2 / size - 3
       var finger = fingers[shape.color]
       var n = Math.min(++finger.n, smoothing)
       finger.x += (x - finger.x) / n
@@ -73,7 +73,7 @@ Cute.ready(function () {
   })
 })
 
-function cleanCoords (o) {
+function cleanCoords(o) {
   return {
     x: o.x.toFixed(4) * 1,
     y: o.y.toFixed(4) * 1,
@@ -81,11 +81,11 @@ function cleanCoords (o) {
   }
 }
 
-function getDistance (a, b) {
+function getDistance(a, b) {
   var x = b.x - a.x, y = b.y - a.y, z = b.z - a.z
   return Math.sqrt(x * x + y * y + z * z)
 }
 
-setTimeout(function () {
+setTimeout(function() {
   location.reload()
 }, 1e6)

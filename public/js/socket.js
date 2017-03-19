@@ -10,6 +10,7 @@ socket.on('load:loaded', function () {
 socket._n = 0
 
 socket.log = function (type, data) {
+  data = data || {}
   data.type = type
   socket.emit('log', data)
 }

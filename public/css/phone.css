@@ -10,6 +10,7 @@ a-entity.context {
 }
 a-box.button {
   display: block;
+  filter: brightness(90%);
   width: 50%;
   height: 33%;
   float: left;
@@ -20,48 +21,61 @@ svg.icon {
   height: 100%;
 }
 .shape-button,
-.main-button {
+.cylinder-button,
+.cone-button {
   background-color: red;
 }
 .search-button,
-.box-button,
 .duplicate-button {
-  background-color: green;
+  background-color: mediumseagreen;
 }
 .file-button,
-.sphere-button,
 .delete-button {
-  background-color: blue;
+  background-color: purple;
 }
 .rooms-button,
-.cylinder-button,
 .add-button {
-  background-color: orange;
+  background-color: darkorange;
 }
 .sky-button,
-.cone-button,
 .subtract-button {
-  background-color: yellow;
+  background-color: royalblue;
 }
 .settings-button,
-.torus-button,
-.intersect-button {
-  background-color: purple;
+.intersect-button,
+.main-button {
+  background-color: dimgray;
+}
+
+.sphere-button,
+.box-button,
+.torus-button {
+  background-color: maroon;
+}
+
+.shape-display {
+  width: 114px;
+  height: 134px;
+  display: block;
+  margin: auto;
+  padding: 0;
 }
 
 .button-display {
   color: white;
   text-align: center;
-  height: 33%;
+  height: 100%;
   padding-top: 20px;
 }
 
-.button-icon {
-  font-size: 6em !important;
-  padding: 10px;
+img.button-icon {
+  margin: auto;
+  height: 65%;
 }
 
 .button-text {
+  font-family: 'Ubuntu', sans-serif;
+  padding-top: 10px;
   color: white;
   text-align: center;
 }
