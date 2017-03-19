@@ -32,8 +32,8 @@ for context in contexts
         if button === 'shape'
           if mode === 'virtual'
             a-sphere(color="white" radius="0.05" position="0 0.05 -0.05" opacity="={opacity}")
-            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="={opacity}")
-            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="={opacity}")
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.042" opacity="={opacity}")
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.07" position="0.05 0.06 0.042" rotation="-90 0 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/shapes.svg")
@@ -50,7 +50,7 @@ for context in contexts
 
         else if button === 'file'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-obj-model.menuIcons(src="/things/file.obj" position="0.00 -0.45 0.11" color="white" rotation="180 0 0" scale="0.007 0.007 0.007" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/file.svg")
@@ -66,7 +66,7 @@ for context in contexts
 
         else if button === 'sky'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-obj-model.menuIcons(src="/things/sky.obj" position="-0.20 -0.67 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/sky.svg")
