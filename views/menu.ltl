@@ -35,18 +35,16 @@ for context in contexts
             a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="0")
             a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="0")
           else
-            svg(viewBox="0 0 64 64")
-              path(stroke="#fff" fill="#fff" d="M32 8a12 12 1 1 0 .01 0z")
-              path(stroke="#fff" fill="#fff" d="M8 36h20v20h-20z")
-              path(stroke="#fff" fill="#fff" d="M32 58h26l-13-22z")
-              h2.button-text shape
+            .button-display
+              img.button-icon(src="icons/svg/shapes.svg")
+              h2.button-text shapes
 
         else if button === 'search'
           if mode === 'virtual'
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-search
+              img.button-icon(src="icons/svg/search.svg")
               h2.button-text search
 
         else if button === 'file'
@@ -54,7 +52,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-file
+              img.button-icon(src="icons/svg/file.svg")
               h2.button-text file
 
         else if button === 'rooms'
@@ -62,7 +60,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-home
+              img.button-icon(src="icons/svg/door.svg")
               h2.button-text rooms
 
         else if button === 'sky'
@@ -70,7 +68,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-globe
+              img.button-icon(src="icons/svg/sky.svg")
               h2.button-text sky
 
         else if button === 'settings'
@@ -78,7 +76,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-cog
+              img.button-icon(src="icons/svg/settings.svg")
               h2.button-text settings
 
         else if button === 'main'
@@ -86,7 +84,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-arrow-left
+              img.button-icon(src="icons/svg/back-arrow.svg")
               h2.button-text back
 
         else if button === 'box'
@@ -94,7 +92,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-cube
+              img.button-icon(src="icons/svg/cube.svg")
               h2.button-text box
 
         else if button === 'sphere'
@@ -102,7 +100,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-circle
+              img.button-icon(src="icons/svg/sphere.svg")
               h2.button-text sphere
 
         else if button === 'cylinder'
@@ -110,7 +108,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-circle-thin
+              img.button-icon(src="icons/svg/cylinder.svg")
               h2.button-text cylinder
 
         else if button === 'cone'
@@ -118,7 +116,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-caret-up
+              img.button-icon(src="icons/svg/cone.svg")
               h2.button-text cone
 
         else if button === 'torus'
@@ -126,7 +124,7 @@ for context in contexts
             // TODO: Virtual button content.
           else
             .button-display
-              i.button-icon.fa.fa-circle-o
+              img.button-icon(src="icons/svg/torus.svg")
               h2.button-text torus
 
         else if button === 'duplicate'
