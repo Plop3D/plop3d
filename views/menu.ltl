@@ -31,9 +31,9 @@ for context in contexts
 
         if button === 'shape'
           if mode === 'virtual'
-            a-sphere(color="white" radius="0.05" position="0 0.05 -0.05" opacity="0")
-            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="0")
-            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="0")
+            a-sphere(color="white" radius="0.05" position="0 0.05 -0.05" opacity="={opacity}")
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="={opacity}")
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/shapes.svg")
@@ -41,7 +41,8 @@ for context in contexts
 
         else if button === 'search'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-torus(radius="0.06" radius-tubular="0.01" arc="360" color="white" position="-0.02 0.04 -0.02" rotation="90 0 0" scale="1 1 1.5" opacity="={opacity}")
+            a-cylinder(color="white" radius="0.03" height="0.08" position="0.04 0.04 0.04" rotation="0 135 90" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/search.svg")
