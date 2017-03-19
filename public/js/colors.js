@@ -155,7 +155,7 @@ Cute.ready(function () {
           color: color.name,
           x: (best.x0 + best.x1) / 2,
           y: (best.y0 + best.y1) / 2,
-          size: Math.max(best.x1 - best.x0, best.y1 - best.y0)
+          size: 1 + Math.max(best.x1 - best.x0, best.y1 - best.y0)
         })
         color.shapes = []
       }
