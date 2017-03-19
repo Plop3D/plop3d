@@ -19,16 +19,30 @@ socket.on('phone', function(data) {
 
 var lastCameraY;
 var lastPhoneY;
+var timerToHide;
 socket.on('tilt', function(data) {
+  //console.log(data)
   if (camera) {
     var phone = Cute.one('#' + data.phone + '-phone')
     var rot = camera.getAttribute('rotation')
-    if(!lastCameraY || !lastPhoneY || Math.abs(data.alpha) % 360 < 3) {
+    if (!lastCameraY || !lastPhoneY || Math.abs(data.alpha) % 360 < 3) {
       lastCameraY = rot.y
       lastPhoneY = data.alpha
     }
     var rotation = (data.beta) + ' ' + (data.alpha - lastPhoneY + lastCameraY - rot.y + 10) + ' ' + (-data.gamma)
     Cute.attr(phone, 'rotation', rotation)
+
+    if(data.beta < 0){
+      if(!timerToHide) {
+        timerToHide = setTimeout(function() {
+          Cute.attr(phone, 'visible', false)
+        }, 500)
+      }
+    } else {
+      clearTimeout(timerToHide)
+      timerToHide = undefined
+      Cute.attr(phone, 'visible', true)
+    }
   }
 })
 
@@ -46,7 +60,7 @@ socket.on('finger', function(data) {
 var last
 socket.on('draw:start', function(data) {
   last = data
-  Cute.all('a-cylinder.draw-stroke', Cute.remove)
+  //Cute.all('a-cylinder.draw-stroke', Cute.remove)
 })
 
 var drawN = 0
@@ -104,7 +118,7 @@ socket.on('shape', function(data) {
     new THREE.Vector3(indexPosition.x, indexPosition.y, indexPosition.z))
   var position = [pos.x, 0, pos.z]
   console.log('position: ', position)
-  console.log('cone string: ','a-cone?color=red&radius-bottom=100&radius-top=0&height=100&position=' + position.join(' '))
+  console.log('cone string: ', 'a-cone?color=red&radius-bottom=100&radius-top=0&height=100&position=' + position.join(' '))
 
   var shape = data.name;
   var entity = Cute.add(scene, 'a-entity.entitittiable?&position=' + position.join(' '))
@@ -120,4 +134,40 @@ socket.on('shape', function(data) {
   } else if (shape === 'torus') {
     Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
   }
+})
+
+
+var lastGrab
+var selectedModel
+socket.on('grab:start', function(data) {
+  lastGrab = data
+  var point = camera.object3D.localToWorld(
+    new THREE.Vector3(data.x, data.y, data.z))
+  var models = Cute.all('[obj-model]')
+  for (var i = 0; i < models.length; i++) {
+    var box = new THREE.Box3().setFromObject(models[i].object3D)
+    if (box.containsPoint(point)) {
+      selectedModel = models[i]
+      break;
+    }
+  }
+})
+
+
+socket.on('grab:move', function(data) {
+  var model = selectedModel || camera
+  if (lastGrab) {
+    var pos = model.getAttribute('position');
+    pos.x += data.x - lastGrab.x
+    pos.y += data.y - lastGrab.y
+    pos.z += data.z - lastGrab.z
+    Cute.attr(model, 'position', [pos.x, pos.y, pos.z].join(' '))
+    lastGrab = data
+  }
+})
+
+
+socket.on('grab:end', function(data) {
+  selectedModel = undefined;
+  lastGrab = undefined;
 })
