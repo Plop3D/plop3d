@@ -219,4 +219,5 @@ socket.on('grab:end', function(data) {
 
 socket.on('clear', function(){
   Cute.all('.operable', Cute.remove);
+  Cute.all('.search-results-box', Cute.remove);
 })
