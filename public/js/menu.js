@@ -25,7 +25,7 @@ function polyfill (map, key) {
     map['moz' + cap] || map['ms' + cap] || map['o' + cap]
 }
 
-var contexts = ['main', 'shape', 'selected']
+var contexts = ['main', 'shape', 'selected', 'sky']
 
 Cute.each(contexts, function(context) {
   Cute.on('a-box.' + context + '-button', touchEnd, function() {
@@ -58,6 +58,10 @@ Cute.on('.search-button', touchEnd, function() {
 
 Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
+})
+
+Cute.on('.sky-button', touchEnd, function() {
+  socket.emit('sky', { name: 'sky' })
 })
 
 Cute.on('.cone-button', touchEnd, function() {
