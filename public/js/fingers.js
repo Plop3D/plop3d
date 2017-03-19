@@ -52,19 +52,19 @@ Cute.ready(function() {
       z: (index.z + thumb.z) / 2
     }
     var gap = getDistance(index, thumb)
-    var pointiness = thumb.z - index.z
-    var isPointing = gap > 0.4 && pointiness > 0.3
-    if (isPointing) {
-      if (!isDrawing) {
-        isDrawing = true
-        socket.emit('draw:start', cleanCoords(index))
-      } else {
-        socket.emit('draw:move', cleanCoords(index))
-      }
-    } else if (isDrawing) {
-      socket.emit('draw:end', cleanCoords(index))
-      isDrawing = false
-    }
+    // var pointiness = thumb.z - index.z
+    // var isPointing = gap > 0.4 && pointiness > 0.3
+    // if (isPointing) {
+    //   if (!isDrawing) {
+    //     isDrawing = true
+    //     socket.emit('draw:start', cleanCoords(index))
+    //   } else {
+    //     socket.emit('draw:move', cleanCoords(index))
+    //   }
+    // } else if (isDrawing) {
+    //   socket.emit('draw:end', cleanCoords(index))
+    //   isDrawing = false
+    // }
 
     var isPinched = gap < 0.2
     if (isPinched) {
