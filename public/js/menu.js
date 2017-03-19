@@ -9,13 +9,10 @@ var touchMove = isMobile ? 'touchmove' : 'mousemove'
 var touchEnd = isMobile ? 'touchend' : 'mouseup'
 
 Cute.on('touchstart', function() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
-
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
+  polyfill(document, 'fullscreenElement')
+  polyfill(document.documentElement, 'requestFullScreen')()
+  if (!document.fullScreenElement) {
+    document.documentElement.requestFullScreen()
   }
 })
 
@@ -26,10 +23,36 @@ function polyfill (map, key) {
 }
 
 var contexts = ['main', 'shape', 'selected', 'sky']
-
 Cute.each(contexts, function(context) {
   Cute.on('a-box.' + context + '-button', touchEnd, function() {
     socket.emit('context', context)
+  })
+})
+socket.on('context', setContext)
+
+function setContext (context) {
+  // Hide all contexts in a-frame and on the real phone.
+  Cute.all('.context', function(tag) {
+    Cute.attr(tag, 'visible', 'false')
+    Cute.attr(tag, 'style', 'display:none')
+  })
+  // Show the context that we're activating.
+  Cute.all('.' + context + '-context', function(tag) {
+    Cute.attr(tag, 'visible', 'true')
+    Cute.attr(tag, 'style', 'display:block')
+  })
+}
+
+var skies = ['forest', 'pagoda', 'prague', 'reef', 'venice']
+Cute.each(skies, function(name) {
+  Cute.on('a-box.' + name + '-button', touchEnd, function() {
+    socket.emit('sky', {name: name})
+  })
+})
+socket.on('sky', function (data) {
+  Cute.one('a-sky', function (sky) {
+    var src = '/sky/' + data.name + '.jpg'
+    Cute.attr(sky, 'src', src)
   })
 })
 
@@ -60,10 +83,6 @@ Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })
 
-Cute.on('.sky-button', touchEnd, function() {
-  socket.emit('sky', { name: 'sky' })
-})
-
 Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
   Cute.on('.' + shape + '-button', touchEnd, function() {
     socket.emit('shape', {
@@ -75,18 +94,3 @@ Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
 Cute.on('.sphere-button', touchEnd, function() {
   socket.emit('shape', { name: 'sphere' });
 })
-
-socket.on('context', setContext)
-
-function setContext (context) {
-  // Hide all contexts in a-frame and on the real phone.
-  Cute.all('.context', function(tag) {
-    Cute.attr(tag, 'visible', 'false')
-    Cute.attr(tag, 'style', 'display:none')
-  })
-  // Show the context that we're activating.
-  Cute.all('.' + context + '-context', function(tag) {
-    Cute.attr(tag, 'visible', 'true')
-    Cute.attr(tag, 'style', 'display:block')
-  })
-}
