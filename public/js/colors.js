@@ -213,8 +213,10 @@ Cute.ready(function () {
           break
       }
     }
-    if ((h > 0.7 && h < 1.5) && d > 60) {
-      h = h - 1.1
+    var radius = 0.8
+    var indexHue = 0.7
+    if ((h > indexHue && h < indexHue + radius) && d > 60) {
+      h -= indexHue + radius / 2
       f = d / (h * h + 0.1)
       if (f > YELLOW.bestFit / 10) {
         getColor.fit = f
@@ -224,10 +226,12 @@ Cute.ready(function () {
         return YELLOW
       }
     }
-    if ((h > 3.1 && h < 3.9) && d > 50) {
-      h = h - 3.5
-      f = getColor.fit = d / (h * h + 0.1)
+    var thumbHue = 1.8
+    if ((h > thumbHue && h < thumbHue + radius) && d > 65) {
+      h -= thumbHue + radius / 2
+      f = d / (h * h + 0.1)
       if (f > BLUE.bestFit / 10) {
+        getColor.fit = f
         if (f > BLUE.bestFit) {
           BLUE.bestFit = f
         }
