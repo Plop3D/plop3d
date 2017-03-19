@@ -7,6 +7,7 @@ var JSON = require('lighter-json')
 var ip = require('ip').address()
 var app = express()
 var io = new (require('socket.io'))()
+var request = require('request')
 
 var key = fs.readFileSync('config/ssl.key')
 var cert = fs.readFileSync('config/ssl.crt')
@@ -28,6 +29,11 @@ ports.forEach(function (port, ssl) {
     log('Listening at ' + (protocol + '//' + ip + ':' + port + '/').cyan)
   })
   io.attach(server)
+})
+
+app.get('/thing/*', function (req, res) {
+  var url = req.url.replace(/^\/[a-z]+/, 'https://cdn.thingiverse.com')
+  request.get(url).pipe(res)
 })
 
 clients = []
