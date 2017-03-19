@@ -81,18 +81,12 @@ socket.on('context', setContext)
 function setContext (context) {
   // Hide all contexts in a-frame and on the real phone.
   Cute.all('.context,.context *', function(tag) {
-    Cute.attr(tag, 'opacity', 0)
+    Cute.attr(tag, 'visible', 'false')
     Cute.attr(tag, 'style', 'display:none')
   })
   // Show the context that we're activating.
   Cute.all('.' + context + '-context,.' + context + '-context *', function(tag) {
-    Cute.attr(tag, 'opacity', 1)
+    Cute.attr(tag, 'visible', 'true')
     Cute.attr(tag, 'style', 'display:block')
   })
 }
-
-Cute.ready(function() {
-  Cute.all('a-entity.menu *', function(tag) {
-    Cute.attr(tag, 'opacity', 0)
-  })
-})

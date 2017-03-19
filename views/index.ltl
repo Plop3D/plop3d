@@ -21,10 +21,10 @@ a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         x = phone === 'right' ? 0.7 : -0.7
         a-entity#={phone}-phone(position="={x} 0.25 -2.5")
           a-entity#={phone}-device
-            a-box(position="0 0.04 0" width="0.52" height="0.01" depth="0.77" color="#000" opacity="0")
-            a-cylinder(position="0 0.04 0.5" radius="0.05" height="0.01" color="#555" opacity="0")
-            a-box(width="0.6" height="0.07" depth="1.2" color="#333" opacity="0")
-            a-entity.menu(position="0 0.05 0" width="0.5" height="0.01" opacity="0")
+            a-box(position="0 0.04 0" width="0.52" height="0.01" depth="0.77" color="#000")
+            a-cylinder(position="0 0.04 0.5" radius="0.05" height="0.01" color="#555")
+            a-box(width="0.6" height="0.07" depth="1.2" color="#333")
+            a-entity.menu(position="0 0.05 0" width="0.5" height="0.01")
 
               // Show the current menu on an "actual" phone (as opposed to "virtual").
               @menu(context=context mode="virtual")

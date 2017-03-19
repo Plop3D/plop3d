@@ -12,8 +12,8 @@ Cute.on('touchend', function() {
 })
 
 socket.on('phone', function(data) {
-  Cute.all('#' + data.phone + '-phone *', function(tag) {
-    Cute.attr(tag, 'opacity', 1)
+  Cute.all('#' + data.phone + '-phone', function(tag) {
+    Cute.attr(tag, 'visible', true)
   })
 })
 
