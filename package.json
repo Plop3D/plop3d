@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "exam",
-    "start": "./node_modules/.bin/lighter-run",
-    "rundebug": "node index"
+    "start": "node index"
   },
   "repository": {
     "type": "git",
