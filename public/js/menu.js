@@ -45,8 +45,16 @@ Cute.on('.search-button', touchEnd, function() {
   }
 })
 
-Cute.on('.cone-button', touchEnd, function() {
+Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
+})
+
+Cute.on('.cone-button', touchEnd, function() {
+  socket.emit('shape', { name: 'cone' });
+})
+
+Cute.on('.sphere-button', touchEnd, function() {
+  socket.emit('shape', { name: 'sphere' });
 })
 
 // TODO: Figure out why context isn't switching.
