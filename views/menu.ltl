@@ -74,7 +74,7 @@ for context in contexts
 
         else if button === 'settings'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-obj-model.menuIcons(src="/things/settings.obj" position="0.17 -0.61 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/settings.svg")
