@@ -89,7 +89,7 @@ for context in contexts
 
         else if button === 'box'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="0 0.05 0" opacity="0")
           else
             .button-display
               img.button-icon(src="icons/svg/cube.svg")
@@ -97,7 +97,7 @@ for context in contexts
 
         else if button === 'sphere'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-sphere(color="white" radius="0.06" position="0 0.05 0" opacity="0")
           else
             .button-display
               img.button-icon(src="icons/svg/sphere.svg")
@@ -105,7 +105,7 @@ for context in contexts
 
         else if button === 'cylinder'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-cylinder(color="white" radius="0.05" height="0.1" position="0 0.05 0" rotation="0 0 0" opacity="0")
           else
             .button-display
               img.button-icon(src="icons/svg/cylinder.svg")
@@ -113,7 +113,7 @@ for context in contexts
 
         else if button === 'cone'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0 0.055 0" rotation="0 0 0" opacity="0")
           else
             .button-display
               img.button-icon(src="icons/svg/cone.svg")
@@ -121,7 +121,7 @@ for context in contexts
 
         else if button === 'torus'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-torus(color="white" radius="0.06" radius-tubular="0.006" position="0 0.06 0" rotation="90 0 0" opacity="0")
           else
             .button-display
               img.button-icon(src="icons/svg/torus.svg")
