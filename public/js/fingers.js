@@ -10,6 +10,10 @@ Cute.ready(function() {
   var offset = scale / 2
   var isDrawing = false
   var isGrabbing = false
+  var isPinched = false
+  var lastPinchedAt = 0
+  var pinchCount = 0 // Number of times pinched
+  var beingPinched = false
 
   Cute.each(fingers, function(name, color) {
     fingers[name] = fingers[color] = {
@@ -66,11 +70,25 @@ Cute.ready(function() {
       isDrawing = false
     }
 
-    var isPinched = gap < 0.2
+    var justPinched = isPinched
+    isPinched = gap < 0.2
+
+    if (justPinched && !isPinched){
+      lastPinchedAt = Date.now()
+    }
+
     if (isPinched) {
+      var pinchTime = Date.now()
+      beingPinched = pinchTime - lastPinchedAt < 1000
       if (!isGrabbing) {
-        isGrabbing = true
-        socket.emit('grab:start', cleanCoords(center))
+        if (!justPinched) {
+            pinchCount++;
+        } else if (!beingPinched) {
+          isGrabbing = true
+          socket.emit('grab:start', cleanCoords(center))
+          pinchCount = 0;
+          lastPinchedAt = 0;
+        }
       } else {
         socket.emit('grab:move', cleanCoords(center))
       }
