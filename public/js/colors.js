@@ -266,5 +266,5 @@ var Color = Cute.type(function (index, name, hex) {
 var fingers = {}
 
 var YELLOW = new Color(0, 'Yellow')
-var BLUE = new Color(1, 'DodgerBlue')
+var BLUE = new Color(1, 'ForestGreen')
 var colors = [YELLOW, BLUE]

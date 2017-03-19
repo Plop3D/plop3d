@@ -164,9 +164,15 @@ socket.on('grab:move', function(data) {
   var model = selectedModel || camera
   if (lastGrab) {
     var pos = model.getAttribute('position');
-    pos.x += data.x - lastGrab.x
-    pos.y += data.y - lastGrab.y
-    pos.z += data.z - lastGrab.z
+    if(window.isMobile){
+      pos.x += data.x - lastGrab.x
+      pos.y += data.y - lastGrab.y
+      pos.z += data.z - lastGrab.z
+    } else {
+      pos.x -= data.x - lastGrab.x
+      pos.y -= data.y - lastGrab.y
+      pos.z -= data.z - lastGrab.z
+    }
     Cute.attr(model, 'position', [pos.x, pos.y, pos.z].join(' '))
     lastGrab = data
   }
