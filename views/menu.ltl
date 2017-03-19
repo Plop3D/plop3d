@@ -2,7 +2,7 @@
 coords = ['-0.125 0 -.25', '0.125 0 -.25', '-0.125 0 0', '0.125 0.01 0', '-0.125 0 .25', '0.125 0 .25']
 
 // Menu colors might look kitchy, but we can try it.
-colors = ['red', 'green', 'blue', 'orange', 'gold', 'purple']
+colors = ['red', 'green', 'blue', 'orange', 'purple', 'darkgray']
 
 // By default, show the main menu.
 current = context || 'main'
