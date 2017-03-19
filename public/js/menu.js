@@ -8,7 +8,7 @@ var touchStart = isMobile ? 'touchstart' : 'mousedown'
 var touchMove = isMobile ? 'touchmove' : 'mousemove'
 var touchEnd = isMobile ? 'touchend' : 'mouseup'
 
-Cute.once('touchstart', function() {
+Cute.on('touchstart', function() {
   var element = document.documentElement
   polyfill(document, 'fullscreenElement')
   polyfill(element, 'requestFullScreen')
