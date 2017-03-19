@@ -6,11 +6,11 @@ var body = Cute.one('body')
 var agent = navigator.userAgent
 var phone = (/Android/.test(navigator.userAgent) ? 'left' : 'right')
 
-socket.on('connect', function () {
-  socket.emit('phone', {agent: agent, phone: phone})
+socket.on('connect', function() {
+  socket.emit('phone', { agent: agent, phone: phone })
 })
 
-function show () {
+function show() {
   Cute.html(pre, JSON.stringify(data, null, '  '))
   for (var key in data) {
     var map = data[key]
@@ -21,7 +21,7 @@ function show () {
   }
 }
 
-Cute.on(window, 'deviceorientation', function (type, event) {
+Cute.on(window, 'deviceorientation', function(type, event) {
   var tilt = {
     alpha: event.alpha,
     beta: event.beta,
@@ -33,12 +33,12 @@ Cute.on(window, 'deviceorientation', function (type, event) {
 })
 
 // Acceleration baseline.
-var ab = {x: 0, y: 0, z: 0, n: 0, s: 0}
+var ab = { x: 0, y: 0, z: 0, n: 0, s: 0 }
 
-Cute.on(window, 'devicemotion', function (type, event) {
+Cute.on(window, 'devicemotion', function(type, event) {
   var a = event.acceleration
   var n = Math.min(++ab.n, 1000)
-  var d = {x: a.x - ab.x, y: a.y - ab.y, z: a.z - ab.z}
+  var d = { x: a.x - ab.x, y: a.y - ab.y, z: a.z - ab.z }
   ab.x += d.x / n
   ab.y += d.y / n
   ab.z += d.z / n
