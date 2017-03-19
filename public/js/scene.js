@@ -19,7 +19,6 @@ socket.on('phone', function(data) {
 
 var lastCameraY;
 var lastPhoneY;
-var timerToHide;
 socket.on('tilt', function(data) {
   //console.log(data)
   if (camera) {
@@ -32,15 +31,15 @@ socket.on('tilt', function(data) {
     var rotation = (data.beta) + ' ' + (data.alpha - lastPhoneY + lastCameraY - rot.y + 10) + ' ' + (-data.gamma)
     Cute.attr(phone, 'rotation', rotation)
 
-    if(data.beta < 0){
-      if(!timerToHide) {
-        timerToHide = setTimeout(function() {
+    if (data.beta < 0) {
+      if (!phone.timerToHide) {
+        phone.timerToHide = setTimeout(function() {
           Cute.attr(phone, 'visible', false)
         }, 500)
       }
     } else {
-      clearTimeout(timerToHide)
-      timerToHide = undefined
+      clearTimeout(phone.timerToHide)
+      delete phone.timerToHide
       Cute.attr(phone, 'visible', true)
     }
   }
@@ -55,45 +54,52 @@ socket.on('finger', function(data) {
   var finger = Cute.one('#' + data.name + '-finger')
   var position = data.x + ' ' + data.y + ' ' + data.z
   Cute.attr(finger, 'position', position)
+  Cute.attr(finger, 'visible', true)
+  clearTimeout(finger.timerToHide)
+  finger.timerToHide = setTimeout(function() {
+    Cute.attr(finger, 'visible', false)
+  }, 200)
 })
 
 var last
 socket.on('draw:start', function(data) {
-  last = data
-  //Cute.all('a-cylinder.draw-stroke', Cute.remove)
+  last = camera.object3D.localToWorld(
+    new THREE.Vector3(data.x, data.y, data.z))
 })
 
 var drawN = 0
 socket.on('draw:move', function(data) {
-  var pos = camera.object3D.localToWorld(new THREE.Vector3(
-    (data.x + last.x) / 2,
-    (data.y + last.y) / 2,
-    (data.z + last.z) / 2));
+  if (last) {
+    data = camera.object3D.localToWorld(
+      new THREE.Vector3(data.x, data.y, data.z))
 
-  var position = [pos.x, pos.y, pos.z]
-  var dx = data.x - last.x
-  var dy = data.y - last.y
-  var dz = data.z - last.z
-  var s = dx * dx + dz * dz
-  var height = Math.sqrt(s + dy * dy) + 0.05
-  if (height < 0.05) {
-    return
+    var position = [
+      (data.x + last.x) / 2, (data.y + last.y) / 2, (data.z + last.z) / 2]
+    var dx = data.x - last.x
+    var dy = data.y - last.y
+    var dz = data.z - last.z
+    var s = dx * dx + dz * dz
+    var height = Math.sqrt(s + dy * dy) + 0.05
+    if (height < 0.05) {
+      return
+    }
+    var dc = Math.sqrt(s)
+    var r2d = 180 / Math.PI
+    var a = dy ? Math.atan(dc / dy) * r2d : 0
+    var b = dz ? Math.atan(dx / dz) * r2d : 0
+    if (dy < 0) a += 180
+    if (dz < 0) b += 180
+    var rotation = [a, b, 0]
+    var radius = 0.01
+
+    Cute.add(scene, 'a-cylinder.draw-stroke?color=#ff0&radius=' + radius + '&segments-radial=6&height=' + (height + radius / 2) + '&position=' + position.join(' ') + '&rotation=' + rotation.join(' '))
+
+    last = data
   }
-  var dc = Math.sqrt(s)
-  var r2d = 180 / Math.PI
-  var a = dy ? Math.atan(dc / dy) * r2d : 0
-  var b = dz ? Math.atan(dx / dz) * r2d : 0
-  if (dy < 0) a += 180
-  if (dz < 0) b += 180
-  var rotation = [a, b, 0]
-  var radius = 0.01
-
-  Cute.add(scene, 'a-cylinder.draw-stroke?color=#ff0&radius=' + radius + '&segments-radial=6&height=' + (height + radius / 2) + '&position=' + position.join(' ') + '&rotation=' + rotation.join(' '))
-
-  last = data
 })
 
 socket.on('draw:end', function(data) {
+  last = undefined
 })
 
 var assetsMap = {}
