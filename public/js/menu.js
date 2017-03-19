@@ -8,6 +8,17 @@ var touchStart = isMobile ? 'touchstart' : 'mousedown'
 var touchMove = isMobile ? 'touchmove' : 'mousemove'
 var touchEnd = isMobile ? 'touchend' : 'mouseup'
 
+Cute.on('touchstart', function() {
+  var doc = window.document;
+  var docEl = doc.documentElement;
+
+  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  }
+})
+
 function polyfill (map, key) {
   var cap = key[0].toUpperCase() + key.substr(1)
   map[key] = map[key] || map['webkit' + cap] ||
@@ -45,8 +56,16 @@ Cute.on('.search-button', touchEnd, function() {
   }
 })
 
-Cute.on('.cone-button', touchEnd, function() {
+Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
+})
+
+Cute.on('.cone-button', touchEnd, function() {
+  socket.emit('shape', { name: 'cone' });
+})
+
+Cute.on('.sphere-button', touchEnd, function() {
+  socket.emit('shape', { name: 'sphere' });
 })
 
 // TODO: Figure out why context isn't switching.

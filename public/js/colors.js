@@ -215,7 +215,7 @@ Cute.ready(function () {
     }
     var radius = 0.8
     var indexHue = 0.7
-    if ((h > indexHue && h < indexHue + radius) && d > 60) {
+    if ((h > indexHue && h < indexHue + radius) && d > 70) {
       h -= indexHue + radius / 2
       f = d / (h * h + 0.1)
       if (f > YELLOW.bestFit / 10) {
@@ -226,8 +226,8 @@ Cute.ready(function () {
         return YELLOW
       }
     }
-    var thumbHue = 1.8
-    if ((h > thumbHue && h < thumbHue + radius) && d > 65) {
+    var thumbHue = 2.0
+    if ((h > thumbHue && h < thumbHue + radius) && d > 45) {
       h -= thumbHue + radius / 2
       f = d / (h * h + 0.1)
       if (f > BLUE.bestFit / 10) {

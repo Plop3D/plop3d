@@ -10,7 +10,7 @@ var io = new (require('socket.io'))()
 
 var key = fs.readFileSync('config/ssl.key')
 var cert = fs.readFileSync('config/ssl.crt')
-var ports = [8080, 8443]
+var ports = process.env.PORT ? [process.env.PORT] : [8080, 8443]
 
 app.config = require('lighter-config')
 global.app = app
