@@ -104,11 +104,7 @@ socket.on('draw:end', function(data) {
 
 var assetsMap = {}
 socket.on('thing', function(data) {
-  indexPosition = index.getAttribute('position')
-  var pos = camera.object3D.localToWorld(
-    new THREE.Vector3(indexPosition.x, indexPosition.y, indexPosition.z))
-  var position = [pos.x, 0, pos.z]
-
+  var position = getTargetPosition()
   if (!assetsMap[data.name]) {
     Cute.add(assets, 'a-asset-item#' + data.name + '-obj?src=' + data.path + '.obj')
     Cute.add(assets, 'a-asset-item#' + data.name + '-mtl?src=' + data.path + '.mtl')
@@ -117,31 +113,38 @@ socket.on('thing', function(data) {
   Cute.add(scene, 'a-entity?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
 })
 
-socket.on('shape', function(data) {
-  console.log('Putting down a shape! Shape: ', data.name)
-  indexPosition = index.getAttribute('position')
-  var pos = camera.object3D.localToWorld(
-    new THREE.Vector3(indexPosition.x, indexPosition.y, indexPosition.z))
-  var position = [pos.x, 0, pos.z]
-  console.log('position: ', position)
-  console.log('cone string: ', 'a-cone?color=red&radius-bottom=100&radius-top=0&height=100&position=' + position.join(' '))
-
-  var shape = data.name;
-  var entity = Cute.add(scene, 'a-entity.entitittiable?&position=' + position.join(' '))
-  if (shape === 'cone') {
-    var element = Cute.add(entity, 'a-cone.operable?color=red&radius-bottom=100&radius-top=0&height=100')
-    // Cute.attr(element, 'position', position.join(' '))
-  } else if (shape === 'sphere') {
-    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
-  } else if (shape === 'box') {
-    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
-  } else if (shape === 'cylinder') {
-    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
-  } else if (shape === 'torus') {
-    Cute.add(scene, 'a-sphere?color=red&radius=20&position=' + position.join(' '))
+socket.on('search-results', function(results) {
+  for (var i = 0, l = results.length; i < l; i++) {
+    var result = results[i]
+    var x = (i % 4) - 1.5
+    var y = 1.5 - Math.floor(i / 4)
+    var position = x + ' ' + y + ' -5'
+    Cute.add(camera, 'a-image?width=0.9&height=0.9&src=' + result.img + '&position=' + position)
   }
 })
 
+socket.on('shape', function(data) {
+  var position = getTargetPosition()
+  var shape = data.name
+  var attrs
+  switch (shape) {
+    case 'cone': attrs = 'radius-bottom=0.3&radius-top=0&height=0.5'; break
+    case 'sphere': attrs = 'radius=0.3'; break
+    case 'box': attrs = 'width=0.5&height=0.5&depth=0.5'; break
+    case 'cylinder': attrs = 'radius=0.3&height=0.5'; break
+    case 'torus': attrs = 'radius=0.3&radius-tubular=0.1'; break
+  }
+  Cute.add(scene, 'a-' + shape + '.operable?' + attrs +
+    '&color=red&position=' + position.join(' '))
+})
+
+function getTargetPosition() {
+  var target = Cute.one('#index-finger')
+  var point = Cute.attr(target, 'position')
+  var vector = new THREE.Vector3(point.x, point.y, point.z)
+  var coords = camera.object3D.localToWorld(vector)
+  return [coords.x, coords.y, coords.z]
+}
 
 var lastGrab
 var selectedModel
@@ -158,7 +161,6 @@ socket.on('grab:start', function(data) {
     }
   }
 })
-
 
 socket.on('grab:move', function(data) {
   var model = selectedModel || camera
@@ -177,7 +179,6 @@ socket.on('grab:move', function(data) {
     lastGrab = data
   }
 })
-
 
 socket.on('grab:end', function(data) {
   selectedModel = undefined;

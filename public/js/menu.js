@@ -50,7 +50,7 @@ Cute.on('.search-button', touchEnd, function() {
           }
         })
       })
-      socket.log('search', {text: text, alternatives: alternatives})
+      socket.emit('search', {text: text, alternatives: alternatives})
     }
     speech.start()
   }
@@ -60,19 +60,23 @@ Cute.on('.file-button', touchEnd, function() {
   socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
 })
 
+<<<<<<< HEAD
 Cute.on('.sky-button', touchEnd, function() {
   socket.emit('sky', { name: 'sky' })
 })
 
-Cute.on('.cone-button', touchEnd, function() {
-  socket.emit('shape', { name: 'cone' });
+Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
+  Cute.on('.' + shape + '-button', touchEnd, function() {
+    socket.emit('shape', {
+      name: shape
+    })
+  })
 })
 
 Cute.on('.sphere-button', touchEnd, function() {
   socket.emit('shape', { name: 'sphere' });
 })
 
-// TODO: Figure out why context isn't switching.
 socket.on('context', function(context) {
   // Hide all contexts in a-frame and on the real phone.
   Cute.all('.context,.context *', function(tag) {

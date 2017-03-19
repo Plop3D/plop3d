@@ -93,7 +93,7 @@ for context in contexts
             a-box(color="white" width="0.1" height="0.1" depth="0.1" position="0 0.05 0" opacity="={opacity}")
           else
             .button-display
-              img.button-icon(src="icons/svg/cube.svg")
+              img.button-icon(src="icons/svg/box.svg")
               h2.button-text box
 
         else if button === 'sphere'
