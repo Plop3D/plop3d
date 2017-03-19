@@ -17,10 +17,19 @@ socket.on('phone', function(data) {
   })
 })
 
+var lastCameraY;
+var lastPhoneY;
 socket.on('tilt', function(data) {
-  var phone = Cute.one('#' + data.phone + '-phone')
-  var rotation = data.beta + ' ' + data.alpha + ' ' + -data.gamma
-  Cute.attr(phone, 'rotation', rotation)
+  if (camera) {
+    var phone = Cute.one('#' + data.phone + '-phone')
+    var rot = camera.getAttribute('rotation')
+    if(!lastCameraY || !lastPhoneY || Math.abs(data.alpha) % 360 < 3) {
+      lastCameraY = rot.y
+      lastPhoneY = data.alpha
+    }
+    var rotation = (data.beta) + ' ' + (data.alpha - lastPhoneY + lastCameraY - rot.y + 10) + ' ' + (-data.gamma)
+    Cute.attr(phone, 'rotation', rotation)
+  }
 })
 
 socket.on('acceleration', function(data) {

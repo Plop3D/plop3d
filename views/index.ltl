@@ -19,7 +19,7 @@ a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
       // Only allow one phone for now.
       phones = ['left']
       for phone in phones
-        x = phone === 'right' ? 2 : -2
+        x = phone === 'right' ? 0.7 : -0.7
         a-entity#={phone}-phone(position="={x} 0.25 -2.5")
           a-entity#={phone}-device
             a-box(position="0 0.04 0" width="0.52" height="0.01" depth="0.77" color="#000" opacity="0")
