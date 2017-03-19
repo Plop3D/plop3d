@@ -39,7 +39,7 @@ Cute.on('.search-button', touchEnd, function() {
           }
         })
       })
-      socket.log('search', {text: text, alternatives: alternatives})
+      socket.emit('search', {text: text, alternatives: alternatives})
     }
     speech.start()
   }
