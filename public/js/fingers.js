@@ -1,7 +1,7 @@
 Cute.ready(function() {
   var canvas = Cute.one('#canvas')
 
-  var fingers = { Yellow: 'index', DodgerBlue: 'thumb' }
+  var fingers = { Yellow: 'index', ForestGreen: 'thumb' }
 
   var smoothing = 5
   var scale = 5
@@ -23,9 +23,17 @@ Cute.ready(function() {
   Cute.on(document, 'shapes', function(shapes) {
     Cute.each(shapes, function(shape) {
       var size = Math.max(shape.size, 1) / width
-      var x = (0.5 - shape.x / width) / size / 8
-      var y = (0.5 - shape.y / height) / size / 8
-      var z = window.isMobile ? 5 * size - 3 : 0.2 / size - 3
+      var x, y, z
+      if(window.isMobile){
+        x = (shape.x / width - 0.5) / size / 8
+        y = (shape.y / height - 05) / size / 8
+        z = 5 * size - 3
+      }
+      else {
+        x = (0.5 - shape.x / width) / size / 8
+        y = (0.5 - shape.y / height) / size / 8
+        z = 0.2 / size - 3
+      }
       var finger = fingers[shape.color]
       var n = Math.min(++finger.n, smoothing)
       finger.x += (x - finger.x) / n

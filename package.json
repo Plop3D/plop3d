@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "aframe": "^0.5.0",
+    "body-parser": "^1.16.1",
     "cedar": "^0.3.2",
     "chug": "^0.4.2",
     "cute": "^0.0.5",

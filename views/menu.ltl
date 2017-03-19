@@ -32,8 +32,8 @@ for context in contexts
         if button === 'shape'
           if mode === 'virtual'
             a-sphere(color="white" radius="0.05" position="0 0.05 -0.05" opacity="={opacity}")
-            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.03" opacity="={opacity}")
-            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0.05 0.055 0.03" rotation="-90 0 0" opacity="={opacity}")
+            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="-0.05 0.05 0.042" opacity="={opacity}")
+            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.07" position="0.05 0.06 0.042" rotation="-90 0 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/shapes.svg")
@@ -50,7 +50,7 @@ for context in contexts
 
         else if button === 'file'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-obj-model.menuIcons(src="/things/file.obj" position="0.00 -0.45 0.11" color="white" rotation="180 0 0" scale="0.007 0.007 0.007" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/file.svg")
@@ -66,7 +66,7 @@ for context in contexts
 
         else if button === 'sky'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-obj-model.menuIcons(src="/things/sky.obj" position="-0.20 -0.67 0.10" color="white" rotation="180 0 0" scale="0.01 0.01 0.01" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/sky.svg")
@@ -82,7 +82,7 @@ for context in contexts
 
         else if button === 'main'
           if mode === 'virtual'
-            // TODO: Virtual button content.
+            a-obj-model.menuIcons(src="/things/main.obj" position="-0.076 0.05 0.10" color="white" rotation="180 0 0" scale="0.004 0.004 0.004" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/back-arrow.svg")
@@ -90,7 +90,7 @@ for context in contexts
 
         else if button === 'box'
           if mode === 'virtual'
-            a-box(color="white" width="0.07" height="0.07" depth="0.07" position="0 0.05 0" opacity="0")
+            a-box(color="white" width="0.1" height="0.1" depth="0.1" position="0 0.05 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/box.svg")
@@ -98,7 +98,7 @@ for context in contexts
 
         else if button === 'sphere'
           if mode === 'virtual'
-            a-sphere(color="white" radius="0.06" position="0 0.05 0" opacity="0")
+            a-sphere(color="white" radius="0.06" position="0 0.05 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/sphere.svg")
@@ -106,7 +106,7 @@ for context in contexts
 
         else if button === 'cylinder'
           if mode === 'virtual'
-            a-cylinder(color="white" radius="0.05" height="0.1" position="0 0.05 0" rotation="0 0 0" opacity="0")
+            a-cylinder(color="white" radius="0.06" height="0.1" position="0 0.05 0" rotation="0 0 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/cylinder.svg")
@@ -114,7 +114,7 @@ for context in contexts
 
         else if button === 'cone'
           if mode === 'virtual'
-            a-cone(color="white" radius-bottom="0.05" radius-top="0" height="0.1" position="0 0.055 0" rotation="0 0 0" opacity="0")
+            a-cone(color="white" radius-bottom="0.06" radius-top="0" height="0.1" position="0 0.055 0" rotation="0 0 0" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/cone.svg")
@@ -122,7 +122,7 @@ for context in contexts
 
         else if button === 'torus'
           if mode === 'virtual'
-            a-torus(color="white" radius="0.06" radius-tubular="0.006" position="0 0.06 0" rotation="90 0 0" opacity="0")
+            a-torus(color="white" radius="0.06" radius-tubular="0.006" position="0 0.06 0" rotation="90 0 0" scale="1 1 1.5" opacity="={opacity}")
           else
             .button-display
               img.button-icon(src="icons/svg/torus.svg")

@@ -13,6 +13,7 @@ var cert = fs.readFileSync('config/ssl.crt')
 var ports = process.env.PORT ? [process.env.PORT] : [8080, 8443]
 
 app.config = require('lighter-config')
+app.use(require('body-parser').json())
 global.app = app
 global.io = io
 global.log = require('cedar')()
@@ -29,7 +30,9 @@ ports.forEach(function (port, ssl) {
   io.attach(server)
 })
 
+clients = []
 require('./lib/state')
 require('./lib/errors')
 require('./lib/io')
+require('./lib/alexa')
 var load = require('./lib/load')
