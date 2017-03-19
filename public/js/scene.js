@@ -110,7 +110,7 @@ socket.on('thing', function(data) {
     Cute.add(assets, 'a-asset-item#' + data.name + '-mtl?src=' + data.path + '.mtl')
     assetsMap[data.name] = true
   }
-  Cute.add(scene, 'a-entity?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
+  Cute.add(scene, 'a-entity.operable?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
 })
 
 socket.on('search-results', function(results) {
@@ -152,7 +152,7 @@ socket.on('grab:start', function(data) {
   lastGrab = data
   var point = camera.object3D.localToWorld(
     new THREE.Vector3(data.x, data.y, data.z))
-  var models = Cute.all('[obj-model]')
+  var models = Cute.all('.operable')
   for (var i = 0; i < models.length; i++) {
     var box = new THREE.Box3().setFromObject(models[i].object3D)
     if (box.containsPoint(point)) {
