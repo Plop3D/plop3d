@@ -27,6 +27,7 @@
     "jsdom": "^9.12.0",
     "lighter-config": "^1.1.0",
     "lighter-json": "^2.0.0",
+    "lighter-lru-cache": "^1.1.0",
     "lighter-run": "^1.1.0",
     "lighter-spawn": "^1.0.0",
     "lighter-type": "^2.2.1",

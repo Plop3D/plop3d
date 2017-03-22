@@ -3,8 +3,25 @@
 var endpoint = location.protocol + '//' + location.host
 var socket = window.socket = io(endpoint)
 
+// HACK: Receive plain-text email addresses for now.
+Cute.md5 = function (string) {
+  return string
+}
+
 socket.on('load:loaded', function () {
   location.reload()
+})
+
+// If we already have the user's email in local storage, log them in.
+var email = Cute.cookie('email')
+if (email) {
+  socket.emit('user', {id: Cute.md5(email)})
+}
+
+// Force login if the socket tries to do something that requires it.
+socket.on('unauthorized', function () {
+  // FIXME: Currently receiving "unauthorized" even after logging in.
+  // location.href = '/login'
 })
 
 socket._n = 0

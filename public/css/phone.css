@@ -1,7 +1,7 @@
-/*
-In "actual" mode, we're not in an a-frame scene, so we hack a-frame elements
-to look like regular DIVs and such.
-*/
+/**
+ * In "actual" mode, we're not in an a-frame scene, so we hack a-frame elements
+ * to look like regular DIVs and such.
+ */
 a-entity.context {
   display: block;
   width: 100%;

@@ -2,6 +2,8 @@
 polyfill(window, 'URL')
 polyfill(navigator, 'getUserMedia')
 polyfill(window, 'SpeechRecognition')
+polyfill(window, 'SpeechSynthesisUtterance')
+polyfill(window, 'SpeechSynthesis')
 
 var isMobile = /Android|iP(hone|ad)/.test(navigator.userAgent)
 var touchStart = isMobile ? 'touchstart' : 'mousedown'
@@ -58,26 +60,28 @@ socket.on('sky', function (data) {
 })
 
 Cute.on('.search-button', touchEnd, function() {
-  if (window.SpeechRecognition) {
-    var speech = new SpeechRecognition()
-    speech.onresult = function (event) {
-      var text
-      var confidence = 0
-      var alternatives = []
-      Cute.each(event.results, function (candidates) {
-        Cute.each(candidates, function (candidate) {
-          if (candidate.confidence > confidence) {
-            confidence = candidate.confidence
-            text = candidate.transcript
-          } else {
-            alternatives.push(candidate.transcript)
-          }
-        })
-      })
-      socket.emit('search', {text: text, alternatives: alternatives})
+  getSpeech(function (speech) {
+    socket.emit('search', speech)
+  })
+})
+
+var room = Cute.cookie('room') || 'general'
+if (room && !/login/.test(location.href)) {
+  socket.emit('room', {name: room})
+}
+Cute.on('.rooms-button', touchEnd, function() {
+  getSpeech(function (speech) {
+    var room = speech.text
+    socket.emit('room', {name: room})
+    if (window.speechSynthesis) {
+      var text = 'Welcome to the ' + room + ' room!'
+      var speech = new SpeechSynthesisUtterance(text)
+      speechSynthesis.speak(speech)
     }
-    speech.start()
-  }
+  })
+})
+socket.on('room', function (name) {
+  room = name
 })
 
 Cute.on('.file-button', touchEnd, function() {
@@ -95,3 +99,26 @@ Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
 Cute.on('.sphere-button', touchEnd, function() {
   socket.emit('shape', { name: 'sphere' });
 })
+
+function getSpeech (fn) {
+  if (window.SpeechRecognition) {
+    var speech = new SpeechRecognition()
+    speech.onresult = function (event) {
+      var text
+      var confidence = 0
+      var alternatives = []
+      Cute.each(event.results, function (candidates) {
+        Cute.each(candidates, function (candidate) {
+          if (candidate.confidence > confidence) {
+            confidence = candidate.confidence
+            text = candidate.transcript
+          } else {
+            alternatives.push(candidate.transcript)
+          }
+        })
+      })
+      fn({text: text, alternatives: alternatives})
+    }
+    speech.start()
+  }
+}

@@ -1,0 +1,8 @@
+@page(title="Plop3D")
+  script(src="/js/login.js")
+  h1 Login
+  form
+    label Email
+    input#email(type="text")
+  p
+    button(onclick="setTimeout(function(){window.location='/',1})") Done

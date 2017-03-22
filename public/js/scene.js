@@ -91,7 +91,7 @@ socket.on('draw:move', function(data) {
     var rotation = [a, b, 0]
     var radius = 0.01
 
-    Cute.add(scene, 'a-cylinder.draw-stroke?color=#ff0&radius=' + radius + '&segments-radial=6&height=' + (height + radius / 2) + '&position=' + position.join(' ') + '&rotation=' + rotation.join(' '))
+    // Cute.add(scene, 'a-cylinder.draw-stroke?color=#ff0&radius=' + radius + '&segments-radial=6&height=' + (height + radius / 2) + '&position=' + position.join(' ') + '&rotation=' + rotation.join(' '))
 
     last = data
   }

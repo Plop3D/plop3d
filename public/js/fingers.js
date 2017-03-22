@@ -1,8 +1,6 @@
 Cute.ready(function() {
   var canvas = Cute.one('#canvas')
-
   var fingers = {Yellow: 'index', ForestGreen: 'thumb'}
-
   var smoothing = 2
   var scale = 5
   var width = canvas.offsetWidth

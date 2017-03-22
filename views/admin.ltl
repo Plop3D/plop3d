@@ -1,0 +1,14 @@
+@page(title="Plop3D")
+  script(src="/js/login.js")
+  h1 Admin
+  p
+    h2 Users
+    table
+      tr
+        th User Id
+        th Clients
+    h2 Rooms
+    table
+      tr
+        th Name
+        th Clients
