@@ -1,6 +1,6 @@
 Cute.ready(function() {
   var canvas = Cute.one('#canvas')
-  var fingers = {Yellow: 'index', ForestGreen: 'thumb'}
+  var fingers = {Yellow: 'index', ForestGreen: 'thumb', Blue: 'middle'}
   var smoothing = 2
   var scale = 5
   var width = canvas.offsetWidth
@@ -37,7 +37,7 @@ Cute.ready(function() {
       finger.x += (x - finger.x) / n
       finger.y += (y - finger.y) / n
       finger.z += (z - finger.z) / Math.min(++finger.n, smoothing * 3)
-      socket.emit('finger', finger)
+      parent.moveFinger(finger)
     })
     var index = fingers.index
     var thumb = fingers.thumb

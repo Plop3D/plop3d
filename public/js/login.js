@@ -8,6 +8,6 @@ Cute.ready(function () {
 Cute.on('#email', 'change', function (target) {
   var email = target.value
   var userId = Cute.md5(email)
-  Cute.cookie('email', email, {path: '/', maxAge: 9e9})
+  Cute.cookie('email', email, {path: '*', maxAge: 9e9})
   socket.emit('user', {id: userId, agent: navigator.userAgent})
 })

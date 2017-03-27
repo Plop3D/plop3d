@@ -122,3 +122,23 @@ function getSpeech (fn) {
     speech.start()
   }
 }
+
+Cute.on('.rooms-button', touchEnd, function(){
+  socket.emit('clear');
+})
+
+Cute.on('.file-button', touchEnd, function() {
+  socket.emit('thing', { name: 'eiffel', path: '/things/eiffel' });
+})
+
+Cute.on('.settings-button', touchEnd, function() {
+  socket.emit('thing', { name: 'Bambo_House', path: '/things/Bambo_House'});
+})
+
+Cute.each(['box', 'sphere', 'cylinder', 'cone', 'torus'], function (shape) {
+  Cute.on('.' + shape + '-button', touchEnd, function() {
+    socket.emit('shape', {
+      name: shape
+    })
+  })
+})

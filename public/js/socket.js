@@ -16,13 +16,9 @@ socket.on('load:loaded', function () {
 var email = Cute.cookie('email')
 if (email) {
   socket.emit('user', {id: Cute.md5(email)})
+} else if (location.pathname !== '/login') {
+  window.location = '/login'
 }
-
-// Force login if the socket tries to do something that requires it.
-socket.on('unauthorized', function () {
-  // FIXME: Currently receiving "unauthorized" even after logging in.
-  // location.href = '/login'
-})
 
 socket._n = 0
 

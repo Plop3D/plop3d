@@ -97,6 +97,7 @@ Cute.ready(function () {
 
   // Process a new pixel array.
   function update () {
+    // var beforeUpdate = performance.now()
     var changeThreshold = 15
 
     context.clearRect(0, 0, width, height)
@@ -124,11 +125,8 @@ Cute.ready(function () {
         pixel.g = g
         pixel.b = b
       }
-      if (pixel.color) {
-        context.fillStyle = pixel.color.name
-        context.fillRect(pixel.x, pixel.y, 1, 1)
-      }
     }
+    // var afterColoring = performance.now()
 
     for (n = 0; n < area; n++) {
       var pixel = pixels[n]
@@ -139,6 +137,9 @@ Cute.ready(function () {
         }
       }
     }
+    // var afterFill = performance.now()
+    // console.log('colors: ' + (afterColoring - beforeUpdate))
+    // console.log('shapes: ' + (afterFill - afterColoring))
   }
 
   function emit () {
@@ -175,6 +176,8 @@ Cute.ready(function () {
     var neighbors
     while (visited < pixels.length) {
       var pixel = pixels[visited++]
+      context.fillStyle = pixel.color.name
+      context.fillRect(pixel.x, pixel.y, 1, 1)
       if (pixel.x < this.x0) this.x0 = pixel.x
       if (pixel.x > this.x1) this.x1 = pixel.x
       if (pixel.y < this.y0) this.y0 = pixel.y
@@ -213,7 +216,16 @@ Cute.ready(function () {
           break
       }
     }
-    if ((h > 1.8 && h < 3) && d > 25) {
+    if ((h > 0.7 && h < 1.7) && d > 60) {
+      h -= 1.2
+      f = d / (h * h + 0.1)
+      getColor.fit = f
+      if (f > YELLOW.bestFit) {
+        YELLOW.bestFit = f
+      }
+      return YELLOW
+    }
+    if ((h > 1.9 && h < 2.9) && d > 30) {
       h -= 2.4
       f = d / (h * h + 0.1)
       getColor.fit = f
@@ -222,15 +234,15 @@ Cute.ready(function () {
       }
       return GREEN
     }
-    if ((h > 0.7 && h < 1.3) && d > 50) {
-      h -= 1
-      f = d / (h * h + 0.1)
-      getColor.fit = f
-      if (f > YELLOW.bestFit) {
-        YELLOW.bestFit = f
-      }
-      return YELLOW
-    }
+    // if ((h > 3.3 && h < 4.3) && d > 40) {
+    //   h -= 3.8
+    //   f = d / (h * h + 0.1)
+    //   getColor.fit = f
+    //   if (f > BLUE.bestFit) {
+    //     BLUE.bestFit = f
+    //   }
+    //   return BLUE
+    // }
     return null
   }
 })
@@ -260,4 +272,5 @@ var fingers = {}
 
 var YELLOW = new Color(0, 'Yellow')
 var GREEN = new Color(1, 'ForestGreen')
-var colors = [YELLOW, GREEN]
+var BLUE = new Color(2, 'Blue')
+var colors = [YELLOW, GREEN, BLUE]
