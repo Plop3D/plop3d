@@ -37,7 +37,9 @@ Cute.ready(function() {
       finger.x += (x - finger.x) / n
       finger.y += (y - finger.y) / n
       finger.z += (z - finger.z) / Math.min(++finger.n, smoothing * 3)
-      parent.moveFinger(finger)
+      if (parent !== window) {
+        parent.moveFinger(finger)
+      }
     })
     var index = fingers.index
     var thumb = fingers.thumb
@@ -64,7 +66,7 @@ Cute.ready(function() {
       isDrawing = false
     }
 
-    var isPinched = gap < 0.2
+    var isPinched = gap < 0.3
     if (isPinched) {
       if (!isGrabbing) {
         isGrabbing = true
