@@ -7,32 +7,20 @@ a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
   a-scene
 
-    a-sky(src="/sky/reef.jpg")
-    // a-sky(color="#000")
+    // a-sky(src="/sky/reef.jpg")
+    a-sky(color="#000")
 
     a-plane(color="#123" position="0 -0.01 0" rotation="-90 0 0" width="40" height="40")
     for i in a
       a-plane(color="#abc" position="={i * 2 - 20} 0 0" rotation="-90 0 0" width="0.1" height="40")
       a-plane(color="#abc" position="0 0 ={i * 2 - 20}" rotation="-90 0 0" width="40" height="0.1")
 
-    // a-camera
+    a-camera
 
-      // Only allow one phone for now.
-      phones = ['left']
-      for phone in phones
-        x = phone === 'right' ? 0.7 : -0.7
-        a-entity#={phone}-phone(position="={x} 0.25 -2.5")
-          a-entity#={phone}-device
-            a-box(position="0 0.04 0" width="0.52" height="0.01" depth="0.77" color="#000")
-            a-cylinder(position="0 0.04 0.5" radius="0.05" height="0.01" color="#555")
-            a-box(width="0.6" height="0.07" depth="1.2" color="#333")
-            a-entity.menu(position="0 0.05 0" width="0.5" height="0.01")
-
-              // Show the current menu on an "actual" phone (as opposed to "virtual").
-              @menu(context=context mode="virtual")
-
-      fingers = {'index': '#ee0', 'thumb': '#282', 'middle': '#12c'}
-      for finger, color of fingers
-        a-sphere#={finger}-finger(color="={color}" position="0 -99 0" radius="0.1")
+      hands = ['left', 'right']
+      for hand in hands
+        fingers = {'index': '#ee0', 'thumb': '#282'}
+        for finger, color of fingers
+          a-sphere.finger#={hand}-={finger}-finger(color="={color}" position="0 -99 0" radius="0.1")
 
     a-assets
