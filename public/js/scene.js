@@ -55,7 +55,7 @@ function fly () {
     c3d.translateZ(-dz * 0.2 + 0.1)
   } else {
     c3d.rotateY(-dx * 0.03)
-    c3d.translateZ(dz * 0.2 - 0.1)
+    c3d.translateZ(dz * 0.4 - 0.1)
   }
 }
 
