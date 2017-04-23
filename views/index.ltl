@@ -25,5 +25,11 @@ a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         for finger, color of fingers
           a-sphere.finger#={hand}-={finger}-finger(color="={color}" position="0 -99 0" radius="0.16")
 
+    a-box.operable(color='#06c', opacity='0.5', position='-2 0 -2', width='0.6', height='0.6', depth='0.6')
+    a-cylinder.operable(color='#06c', opacity='0.5', position='-1 0 -2', height='0.8', radius='0.4')
+    a-sphere.operable(color='#06c', opacity='0.5', position='0 0 -2', radius='0.5')
+    a-cone.operable(color='#06c', opacity='0.5', position='1 0 -2', radius-bottom='0.5', radius-top='0', height='1')
+    a-torus.operable(color='#06c', opacity='0.5', position='2 0 -2', radius='0.4', radius-tubular='0.1')
+
     // Container for putting objects into the scene with "plopThing".
     a-assets
