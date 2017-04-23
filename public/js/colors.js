@@ -324,6 +324,7 @@ var Color = Cute.type(function (name, fingerName) {
         var finger = hands[handI].fingers[fingerI]
         smoothPull(finger, shape)
         parent.moveFinger(finger)
+        console.log(finger)
       })
     } else if (shapes.length) {
       // TODO: Allow pointing even if one hand has gone out of view (e.g. when
@@ -363,9 +364,31 @@ var Hand = Cute.type(Point, function (name) {
   this.fingers = []
   new Finger('thumb', GREEN, this)
   new Finger('index', YELLOW, this)
-  this.gesture = null
+  // intended for moving objects/ event states
+  //
+  this.isPinching = isPinching(thumb,index)
+  this.isThumbing = false
+  this.isUpright = false
   hands.push(this)
-}, {})
+}, {
+  updatePosition: function () {
+    var index = this.fingers.index
+    var thumb = this.fingers.thumb
+    this.x = (index.x + thumb.x) / 2
+    this.y = (index.y + thumb.y) / 2
+    this.z = (index.z + thumb.z) / 2
+    this.vector = new Point()
+    // TODO: check if vector is very positive or very negative
+
+    var distance = getDistance(index,thumb)
+    var threshhold = index.radius + thumb.radius
+
+    if(Math.abs(distance)-Math.abs(threshhold) <= 0){
+      //trigger pinch
+    }
+  }
+
+})
 
 var fingers = []
 var hands = []
@@ -402,3 +425,8 @@ function smoothPull (a, b) {
 setTimeout(function() {
   location.reload()
 }, 1e6)
+
+function findDistance(index, thumb){
+  var dis = Math.sqrt(X^2 + y^2 + z^2);
+}
+
