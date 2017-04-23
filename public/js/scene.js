@@ -3,7 +3,7 @@ Cute.ready(function() {
   scene = Cute.one('a-scene')
   camera = Cute.one('a-camera')
   assets = Cute.one('a-assets')
-  index = Cute.one('#index-finger')
+  console.log(camera)
 })
 
 Cute.on('touchend', function() {
@@ -19,7 +19,6 @@ window.moveFinger = function (finger) {
 
 var last
 Cute.on('draw:start', function (data) {
-  console.log(data)
   last = camera.object3D.localToWorld(
     new THREE.Vector3(data.x, data.y, data.z))
 })
@@ -31,11 +30,11 @@ window.emit = function (name, hand) {
   }
 }
 
-Cute.on('point:start', function () {
-  var shapes = ['box', 'cone', 'cylinder', 'torus', 'sphere']
-  var shape = shapes[Math.floor(Math.random() * 5)]
-  plopShape({name: shape})
-})
+// Cute.on('point:start', function () {
+//   var shapes = ['box', 'cone', 'cylinder', 'torus', 'sphere']
+//   var shape = shapes[Math.floor(Math.random() * 5)]
+//   plopShape({name: shape})
+// })
 
 var drawN = 0
 Cute.on('draw:move', function (data) {
@@ -142,6 +141,9 @@ function getTargetPosition (id) {
 var lastGrab
 var selectedModel
 Cute.on('grab:start', function(data) {
+  if (!camera) {
+    return
+  }
   var point = camera.object3D.localToWorld(
     new THREE.Vector3(data.x, data.y, data.z))
 
