@@ -217,9 +217,20 @@ Cute.ready(function () {
   function emit () {
     colors.forEach(function (color) {
       color.shapes = []
-      var paths = color.paths.sort(function (a, b) {
+      var paths = color.paths
+      var l = paths.length
+      Cute.each(paths, function (path) {
+        Cute.each(path.pixels, function (pixel) {
+          pixel.path = null
+        })
+      })
+      for (var i = l - 1; i > 0; i--) {
+
+      }
+      paths = paths.sort(function (a, b) {
         return b.score - a.score
-      }).slice(0, 2)
+      })
+      paths = paths.slice(0, 2)
       for (i = 0, l = paths.length; i < l; i++) {
         var path = paths[i]
         var pixels = path.pixels
@@ -236,19 +247,22 @@ Cute.ready(function () {
           var shape = new Point()
           var size = Math.max(path.radius * 2, 1) / width
           if (window.isMobile) {
-            shape.x = (path.x / width - 0.5) / size / 8
-            shape.y = (0.5 - path.y / height) / size / 8
-            shape.z = -0.2 / size
+            shape.x = (path.x / width - 0.5) / size / 4
+            shape.y = (0.5 - path.y / height) / size / 4
+            shape.z = -0.1 / size
           } else {
-            shape.x = (0.5 - path.x / width) / size / 8
-            shape.y = (0.5 - path.y / height) / size / 8
-            shape.z = 0.2 / size - 6
+            shape.x = (0.5 - path.x / width) / size / 4
+            shape.y = (0.5 - path.y / height) / size / 4
+            shape.z = 0.1 / size - 4
           }
           color.shapes.push(shape)
         }
       }
       color.paths = []
       color.updateFingers()
+    })
+    Cute.each(hands, function (hand) {
+      hand.update()
     })
   }
 })
@@ -364,30 +378,58 @@ var Hand = Cute.type(Point, function (name) {
   this.fingers = []
   new Finger('thumb', GREEN, this)
   new Finger('index', YELLOW, this)
-  // intended for moving objects/ event states
-  //
-  this.isPinching = isPinching(thumb,index)
-  this.isThumbing = false
-  this.isUpright = false
   hands.push(this)
+
+  // Store status flags for any gestures currently being made.
+  this.gestures = {
+    // Grab things.
+    pinch: false,
+    // Hitch hike with your thumb up.
+    hitch: false,
+    // Index finger high above thumb.
+    up: false,
+    // Index finger out in front.
+    point: false
+  }
 }, {
-  updatePosition: function () {
-    var index = this.fingers.index
-    var thumb = this.fingers.thumb
+  update: function () {
+    var thumb = this.fingers[0]
+    var index = this.fingers[1]
     this.x = (index.x + thumb.x) / 2
     this.y = (index.y + thumb.y) / 2
     this.z = (index.z + thumb.z) / 2
-    this.vector = new Point()
-    // TODO: check if vector is very positive or very negative
-
-    var distance = getDistance(index,thumb)
-    var threshhold = index.radius + thumb.radius
-
-    if(Math.abs(distance)-Math.abs(threshhold) <= 0){
-      //trigger pinch
+    var dx = index.x - thumb.x
+    var dy = index.y - thumb.y
+    var dz = index.z - thumb.z
+    this.vector = new Point(dx, dy, dz)
+    this.gap = getDistance(index, thumb)
+    this.updateGesture('pinch', this.gap < 0.4)
+    this.updateGesture('hitch', dy < -0.4 && this.gap > 0.6)
+    this.updateGesture('up', (dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3)
+    this.updateGesture('point', dz < -0.9)
+  },
+  updateGesture: function (type, active) {
+    var gestures = this.gestures
+    var doc = parent.document
+    var change
+    if (active) {
+      change = type + (gestures[type] ? 'move': 'start')
+      gestures[type] = true
+    } else {
+      if (gestures[type]) {
+        change = type + 'end'
+        gestures[type] = false
+      }
+    }
+    if (change) {
+      var event = doc.createEvent('MouseEvents')
+      event.initMouseEvent()
+      event.type = change
+      event.target = this
+      doc.dispatchEvent(event)
+      socket.emit('gesture', {type: change, hand: this.name})
     }
   }
-
 })
 
 var fingers = []
@@ -398,17 +440,9 @@ var RIGHT = new Hand('right')
 // Translate fingers 1/2 the distance to where the camera frame shape says the
 // finger has moved in X and Y directions, and 1/6 the distane in the Z
 // direction, reduce jitter.
-var xSmoothing = 1 // 2
-var ySmoothing = 1 // 2
-var zSmoothing = 1 // 6
-
-function cleanCoords(o) {
-  return {
-    x: o.x.toFixed(4) * 1,
-    y: o.y.toFixed(4) * 1,
-    z: o.z.toFixed(4) * 1
-  }
-}
+var xSmoothing = 2 // 2
+var ySmoothing = 2 // 2
+var zSmoothing = 3 // 6
 
 function getDistance(a, b) {
   var x = b.x - a.x, y = b.y - a.y, z = b.z - a.z
@@ -425,8 +459,3 @@ function smoothPull (a, b) {
 setTimeout(function() {
   location.reload()
 }, 1e6)
-
-function findDistance(index, thumb){
-  var dis = Math.sqrt(X^2 + y^2 + z^2);
-}
-
