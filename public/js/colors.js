@@ -18,13 +18,7 @@ Cute.ready(function () {
   // Canvas dimensions.
   var width, height
 
-  // Fake pixel.
-  var out = {color: null}
-
   var scale = 5, offset = scale / 2, sx, sy
-  var smoothing = 5
-  var isDrawing = false
-  var isGrabbing = false
 
   // Size everything to the video dimensions.
   Cute.on(video, 'resize', function () {
@@ -338,7 +332,6 @@ var Color = Cute.type(function (name, fingerName) {
         var finger = hands[handI].fingers[fingerI]
         smoothPull(finger, shape)
         parent.moveFinger(finger)
-        console.log(finger)
       })
     } else if (shapes.length) {
       // TODO: Allow pointing even if one hand has gone out of view (e.g. when
@@ -380,17 +373,7 @@ var Hand = Cute.type(Point, function (name) {
   new Finger('index', YELLOW, this)
   hands.push(this)
 
-  // Store status flags for any gestures currently being made.
-  this.gestures = {
-    // Grab things.
-    pinch: false,
-    // Hitch hike with your thumb up.
-    hitch: false,
-    // Index finger high above thumb.
-    up: false,
-    // Index finger out in front.
-    point: false
-  }
+  this.gesture = null
 }, {
   update: function () {
     var thumb = this.fingers[0]
@@ -403,30 +386,51 @@ var Hand = Cute.type(Point, function (name) {
     var dz = index.z - thumb.z
     this.vector = new Point(dx, dy, dz)
     this.gap = getDistance(index, thumb)
-    this.updateGesture('pinch', this.gap < 0.4)
-    this.updateGesture('hitch', dy < -0.4 && this.gap > 0.6)
-    this.updateGesture('up', (dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3)
-    this.updateGesture('point', dz < -0.9)
+
+    var gesture = null
+    if (this.gap < 0.4) {
+      gesture = 'grab'
+    } else if (dy < -0.4 && this.gap > 0.6) {
+      gesture = 'fly'
+    } else if ((dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3) {
+      gesture = 'menu'
+    } else if (dz < -0.9) {
+      gesture = 'point'
+    }
+
+    parent.emit('move:hand', this)
+
+    // If the gesture for this hand is different, end and/or start.
+    if (gesture !== this.gesture) {
+      if (this.gesture) {
+        parent.emit(this.gesture + ':end', this)
+      }
+      if (gesture) {
+        this.gesture = gesture
+        parent.emit(gesture + ':start', this)
+      } else {
+        this.gesture = null
+      }
+    // If the gesture exists and hasn't changed, move.
+    } else if (gesture) {
+      parent.emit(gesture + ':move', this)
+    }
   },
   updateGesture: function (type, active) {
     var gestures = this.gestures
     var doc = parent.document
     var change
     if (active) {
-      change = type + (gestures[type] ? 'move': 'start')
+      change = type + (gestures[type] ? ':move': ':start')
       gestures[type] = true
     } else {
       if (gestures[type]) {
-        change = type + 'end'
+        change = type + ':end'
         gestures[type] = false
       }
     }
     if (change) {
-      var event = doc.createEvent('MouseEvents')
-      event.initMouseEvent()
-      event.type = change
-      event.target = this
-      doc.dispatchEvent(event)
+      parent.emit(change, this)
       socket.emit('gesture', {type: change, hand: this.name})
     }
   }

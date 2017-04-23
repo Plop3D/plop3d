@@ -11,64 +11,39 @@ Cute.on('touchend', function() {
   socket.emit('mode', 'vr')
 })
 
-socket.on('phone', function(data) {
-  Cute.all('#' + data.phone + '-phone', function(tag) {
-    Cute.attr(tag, 'visible', true)
-  })
-})
-
-var lastCameraY
-var lastPhoneY
-socket.on('tilt', function(data) {
-  if (camera) {
-    var phone = Cute.one('#' + data.phone + '-phone')
-    var rot = camera.getAttribute('rotation')
-    if (!lastCameraY || !lastPhoneY || Math.abs(data.alpha) % 360 < 3) {
-      lastCameraY = rot.y
-      lastPhoneY = data.alpha
-    }
-    var rotation = (data.beta) + ' ' + (data.alpha - lastPhoneY + lastCameraY - rot.y + 10) + ' ' + (-data.gamma)
-    Cute.attr(phone, 'rotation', rotation)
-
-    if (data.beta < 0) {
-      if (!phone.timerToHide) {
-        phone.timerToHide = setTimeout(function() {
-          Cute.attr(phone, 'visible', false)
-        }, 500)
-      }
-    } else {
-      clearTimeout(phone.timerToHide)
-      delete phone.timerToHide
-      Cute.attr(phone, 'visible', true)
-    }
-  }
-})
-
 window.moveFinger = function (finger) {
   var element = Cute.one('#' + finger.id)
   var position = finger.x + ' ' + finger.y + ' ' + finger.z
   Cute.attr(element, 'position', position)
 }
 
-socket.on('acceleration', function(data) {
-  var phone = Cute.one('#' + data.phone + '-phone')
-  var position = data.x + ' ' + data.y + ' ' + data.z
-})
-
 var last
-socket.on('draw:start', function(data) {
+Cute.on('draw:start', function (data) {
+  console.log(data)
   last = camera.object3D.localToWorld(
     new THREE.Vector3(data.x, data.y, data.z))
 })
 
+window.emit = function (name, hand) {
+  Cute.emit(document, name, hand)
+  if (!/move/.test(name)) {
+    socket.emit('gesture', name)
+  }
+}
+
+Cute.on('point:start', function () {
+  var shapes = ['box', 'cone', 'cylinder', 'torus', 'sphere']
+  var shape = shapes[Math.floor(Math.random() * 5)]
+  plopShape({name: shape})
+})
+
 var drawN = 0
-socket.on('draw:move', function(data) {
+Cute.on('draw:move', function (data) {
   if (last) {
     data = camera.object3D.localToWorld(
       new THREE.Vector3(data.x, data.y, data.z))
 
-    var position = [
-      (data.x + last.x) / 2, (data.y + last.y) / 2, (data.z + last.z) / 2]
+    var position = [(data.x + last.x) / 2, (data.y + last.y) / 2, (data.z + last.z) / 2]
     var dx = data.x - last.x
     var dy = data.y - last.y
     var dz = data.z - last.z
@@ -86,7 +61,7 @@ socket.on('draw:move', function(data) {
     var rotation = [a, b, 0]
     var radius = 0.01
 
-    // Cute.add(scene, 'a-cylinder.draw-stroke?color=#ff0&radius=' + radius + '&segments-radial=6&height=' + (height) + '&position=' + position.join(' ') + '&rotation=' + rotation.join(' '))
+    Cute.add(scene, 'a-cylinder.draw-stroke?color=#ff0&radius=' + radius + '&segments-radial=6&height=' + (height) + '&position=' + position.join(' ') + '&rotation=' + rotation.join(' '))
     last = data
   }
 })
@@ -96,19 +71,21 @@ socket.on('draw:end', function(data) {
 })
 
 var assetsMap = {}
-function plopThing(data) {
+function plopThing (data) {
   var position = getTargetPosition()
-  if (!assetsMap[data.name]) {
-    Cute.add(assets, 'a-asset-item#' + data.name + '-obj?src=' + data.path + '.obj')
-    Cute.add(assets, 'a-asset-item#' + data.name + '-mtl?src=' + data.path + '.mtl')
-    assetsMap[data.name] = true
+  var name = data.name
+  var path = data.path
+  if (!assetsMap[name]) {
+    Cute.add(assets, 'a-asset-item#' + name + '-obj?src=' + path + '.obj')
+    Cute.add(assets, 'a-asset-item#' + name + '-mtl?src=' + path + '.mtl')
+    assetsMap[name] = true
   }
-  Cute.add(scene, 'a-entity.operable?obj-model=obj: #' + data.name + '-obj; mtl: #' + data.name + '-mtl&position=' + position.join(' '))
+  Cute.add(scene, 'a-entity.operable?obj-model=obj: #' + name + '-obj; mtl: #' + name + '-mtl&position=' + position.join(' '))
 }
 
 socket.on('thing', plopThing)
 
-socket.on('search-results', function(results) {
+socket.on('search-results', function (results) {
   Cute.all(camera, '.search-results-box', Cute.remove)
   var s = 1
   var g = 20
@@ -127,7 +104,9 @@ socket.on('search-results', function(results) {
   }
 })
 
-socket.on('shape', function(data) {
+socket.on('shape', plopShape)
+
+function plopShape (data) {
   var position = getTargetPosition()
   var shape = data.name
   var attrs
@@ -149,11 +128,11 @@ socket.on('shape', function(data) {
       break
   }
   Cute.add(scene, 'a-' + shape + '.operable?' + attrs +
-    '&color=red&position=' + position.join(' '))
-})
+    '&color=#06c&position=' + position.join(' '))
+}
 
-function getTargetPosition() {
-  var target = Cute.one('#index-finger')
+function getTargetPosition (id) {
+  var target = Cute.one('#right-index-finger')
   var point = Cute.attr(target, 'position')
   var vector = new THREE.Vector3(point.x, point.y, point.z)
   var coords = camera.object3D.localToWorld(vector)
@@ -162,7 +141,7 @@ function getTargetPosition() {
 
 var lastGrab
 var selectedModel
-socket.on('grab:start', function(data) {
+Cute.on('grab:start', function(data) {
   var point = camera.object3D.localToWorld(
     new THREE.Vector3(data.x, data.y, data.z))
 
@@ -198,7 +177,7 @@ socket.on('grab:start', function(data) {
   }
 })
 
-socket.on('grab:move', function(data) {
+Cute.on('grab:move', function(data) {
   var model = selectedModel || camera
   var speed = (model === camera) ? -5 : 1
   if (lastGrab) {
@@ -211,7 +190,7 @@ socket.on('grab:move', function(data) {
   }
 })
 
-socket.on('grab:end', function(data) {
+Cute.on('grab:end', function(data) {
   lastGrab = selectedModel = undefined;
 })
 
