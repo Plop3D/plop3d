@@ -35,7 +35,6 @@ Cute.ready(function () {
     sx = -scale / width
     sy = -scale / height
     pixels = new Array(width * height)
-    squares = new Array(width * height / 9)
     var n = 0
     for (var y = 0; y < height; y++) {
       for (var x = 0; x < width; x++) {
@@ -59,7 +58,8 @@ Cute.ready(function () {
 
   navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(startStreaming)
 
-  // Capture the last camera device ID.
+  // Capture the last camera device ID, which seems to always be the one that's
+  // pointing outward.
   function gotDevices (devices) {
     Cute.each(devices, function (device) {
       if (device.kind === 'videoinput') {
@@ -105,7 +105,6 @@ Cute.ready(function () {
   function update () {
     var beforeUpdate = performance.now()
     context.clearRect(0, 0, width, height)
-
     for (var y = 1; y < height; y += 3) {
       var a = y * width + 1
       var b = (y + 1) * width
@@ -140,9 +139,6 @@ Cute.ready(function () {
         }
       }
     }
-
-    var afterPaths = performance.now()
-    // console.log(afterPaths - beforeUpdate)
   }
 
   var Path = Cute.type(function Path (start) {
@@ -219,11 +215,22 @@ Cute.ready(function () {
   })
 
   function emit () {
-    var shapes = []
     colors.forEach(function (color) {
-      var paths = color.paths.sort(function (a, b) {
+      color.shapes = []
+      var paths = color.paths
+      var l = paths.length
+      Cute.each(paths, function (path) {
+        Cute.each(path.pixels, function (pixel) {
+          pixel.path = null
+        })
+      })
+      for (var i = l - 1; i > 0; i--) {
+
+      }
+      paths = paths.sort(function (a, b) {
         return b.score - a.score
-      }).slice(0, 2)
+      })
+      paths = paths.slice(0, 2)
       for (i = 0, l = paths.length; i < l; i++) {
         var path = paths[i]
         var pixels = path.pixels
@@ -236,17 +243,27 @@ Cute.ready(function () {
           context.beginPath()
           context.arc(path.x, path.y, path.radius, 0, 2 * Math.PI)
           context.stroke()
-          shapes.push({
-            color: color.name,
-            x: path.x,
-            y: path.y,
-            size: path.radius * 2
-          })
+
+          var shape = new Point()
+          var size = Math.max(path.radius * 2, 1) / width
+          if (window.isMobile) {
+            shape.x = (path.x / width - 0.5) / size / 4
+            shape.y = (0.5 - path.y / height) / size / 4
+            shape.z = -0.1 / size
+          } else {
+            shape.x = (0.5 - path.x / width) / size / 4
+            shape.y = (0.5 - path.y / height) / size / 4
+            shape.z = 0.1 / size - 4
+          }
+          color.shapes.push(shape)
         }
       }
       color.paths = []
+      color.updateFingers()
     })
-    Cute.emit(document, 'shapes', shapes)
+    Cute.each(hands, function (hand) {
+      hand.update()
+    })
   }
 })
 
@@ -288,28 +305,157 @@ var Pixel = Cute.type(function Pixel (n, x, y) {
           h = (r - g) / d + 4
           break
       }
-      if ((h > 0.8 && h < 1.8) && d > 40) {
-        color = YELLOW
-      } else if ((h > 1.8 && h < 2.8) && d > 40) {
+      if ((h > 1.8 && h < 2.8) && d > 40) {
         color = GREEN
-      } else if ((h > 3.4 && h < 4.4) && d > 40) {
-        color = BLUE
+      } else if ((h > 0.8 && h < 1.8) && d > 40) {
+        color = YELLOW
       }
     }
     this.color = color
   }
 })
 
-var Color = Cute.type(function (index, name, hex) {
-  this.index = index
+var Color = Cute.type(function (name, fingerName) {
+  this.i = colors.length
   this.name = name
-  this.hex = hex
+  this.fingerName = fingerName
   this.paths = []
+  colors.push(this)
+}, {
+  updateFingers: function () {
+    // The first color is the first finger (i.e. the thumb)
+    var fingerI = this.i
+    var shapes = this.shapes
+    // Apply the left and right shapes to the left and right hands.
+    // TODO: Instead, find the pairings that minimize the movement since the
+    //       frame.
+    if (shapes.length === 2) {
+      shapes.sort(function (a, b) {
+        return a.x - b.x
+      })
+      // The hand index is in ascending X order: left = 0, right = 1.
+      Cute.each(shapes, function (shape, handI) {
+        var finger = hands[handI].fingers[fingerI]
+        smoothPull(finger, shape)
+        parent.moveFinger(finger)
+        console.log(finger)
+      })
+    } else if (shapes.length) {
+      // TODO: Allow pointing even if one hand has gone out of view (e.g. when
+      //       pressing a menu button).
+    }
+  }
+})
+
+var colors = []
+var GREEN = new Color('ForestGreen', 'thumb')
+var YELLOW = new Color('Yellow', 'index')
+
+var Point = Cute.type(function (x, y, z) {
+  this.x = x || 0
+  this.y = y || 0
+  this.z = z || 0
 }, {})
 
-var fingers = {}
+var Finger = Cute.type(Point, function (type, color, hand) {
+  this._super.call(this)
+  this.i = color.i
+  this.type = type
+  this.color = color
+  this.hand = hand
+  // Be able to refer to the DOM element once it exists.
+  this.id = hand.name + '-' + type + '-finger'
+  // Store the fingers by name and by index for convenience:
+  //   hand.thumb === hand.fingers[0]
+  //   hand.index === hand.fingers[1] ...
+  hand.fingers.push(this)
+  hand[type] = this
+}, {})
 
-var YELLOW = new Color(0, 'Yellow')
-var GREEN = new Color(1, 'ForestGreen')
-var BLUE = new Color(2, 'Blue')
-var colors = [YELLOW, GREEN, BLUE]
+var Hand = Cute.type(Point, function (name) {
+  this.i = hands.length
+  this.name = name
+  this.fingers = []
+  new Finger('thumb', GREEN, this)
+  new Finger('index', YELLOW, this)
+  hands.push(this)
+
+  // Store status flags for any gestures currently being made.
+  this.gestures = {
+    // Grab things.
+    pinch: false,
+    // Hitch hike with your thumb up.
+    hitch: false,
+    // Index finger high above thumb.
+    up: false,
+    // Index finger out in front.
+    point: false
+  }
+}, {
+  update: function () {
+    var thumb = this.fingers[0]
+    var index = this.fingers[1]
+    this.x = (index.x + thumb.x) / 2
+    this.y = (index.y + thumb.y) / 2
+    this.z = (index.z + thumb.z) / 2
+    var dx = index.x - thumb.x
+    var dy = index.y - thumb.y
+    var dz = index.z - thumb.z
+    this.vector = new Point(dx, dy, dz)
+    this.gap = getDistance(index, thumb)
+    this.updateGesture('pinch', this.gap < 0.4)
+    this.updateGesture('hitch', dy < -0.4 && this.gap > 0.6)
+    this.updateGesture('up', (dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3)
+    this.updateGesture('point', dz < -0.9)
+  },
+  updateGesture: function (type, active) {
+    var gestures = this.gestures
+    var doc = parent.document
+    var change
+    if (active) {
+      change = type + (gestures[type] ? 'move': 'start')
+      gestures[type] = true
+    } else {
+      if (gestures[type]) {
+        change = type + 'end'
+        gestures[type] = false
+      }
+    }
+    if (change) {
+      var event = doc.createEvent('MouseEvents')
+      event.initMouseEvent()
+      event.type = change
+      event.target = this
+      doc.dispatchEvent(event)
+      socket.emit('gesture', {type: change, hand: this.name})
+    }
+  }
+})
+
+var fingers = []
+var hands = []
+var LEFT = new Hand('left')
+var RIGHT = new Hand('right')
+
+// Translate fingers 1/2 the distance to where the camera frame shape says the
+// finger has moved in X and Y directions, and 1/6 the distane in the Z
+// direction, reduce jitter.
+var xSmoothing = 2 // 2
+var ySmoothing = 2 // 2
+var zSmoothing = 3 // 6
+
+function getDistance(a, b) {
+  var x = b.x - a.x, y = b.y - a.y, z = b.z - a.z
+  return Math.sqrt(x * x + y * y + z * z)
+}
+
+// Pull a nearer to b.
+function smoothPull (a, b) {
+  a.x += (b.x - a.x) / xSmoothing
+  a.y += (b.y - a.y) / ySmoothing
+  a.z += (b.z - a.z) / zSmoothing
+}
+
+setTimeout(function() {
+  location.reload()
+}, 1e6)

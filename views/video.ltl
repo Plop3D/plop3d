@@ -1,6 +1,5 @@
 @page(title="Fingers")
   script(src="/js/colors.js")
-  script(src="/js/fingers.js")
   video#video
   canvas#canvas
   style:

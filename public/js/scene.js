@@ -17,8 +17,8 @@ socket.on('phone', function(data) {
   })
 })
 
-var lastCameraY;
-var lastPhoneY;
+var lastCameraY
+var lastPhoneY
 socket.on('tilt', function(data) {
   if (camera) {
     var phone = Cute.one('#' + data.phone + '-phone')
@@ -44,10 +44,10 @@ socket.on('tilt', function(data) {
   }
 })
 
-window.moveFinger = function (data) {
-  var finger = Cute.one('#' + data.name + '-finger')
-  var position = data.x + ' ' + data.y + ' ' + data.z
-  Cute.attr(finger, 'position', position)
+window.moveFinger = function (finger) {
+  var element = Cute.one('#' + finger.id)
+  var position = finger.x + ' ' + finger.y + ' ' + finger.z
+  Cute.attr(element, 'position', position)
 }
 
 socket.on('acceleration', function(data) {
