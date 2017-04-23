@@ -241,9 +241,9 @@ Cute.ready(function () {
           var shape = new Point()
           var size = Math.max(path.radius * 2, 1) / width
           if (window.isMobile) {
-            shape.x = (path.x / width - 0.5) / size / 4
-            shape.y = (0.5 - path.y / height) / size / 4
-            shape.z = -0.1 / size
+            shape.x = (path.x / width - 0.5) / size / 10
+            shape.y = (0.5 - path.y / height) / size / 10
+            shape.z = -0.25 / size
           } else {
             shape.x = (0.5 - path.x / width) / size / 4
             shape.y = (0.5 - path.y / height) / size / 4
@@ -376,6 +376,7 @@ var Hand = Cute.type(Point, function (name) {
   this.gesture = null
 }, {
   update: function () {
+    var that = hands[1 - this.i]
     var thumb = this.fingers[0]
     var index = this.fingers[1]
     this.x = (index.x + thumb.x) / 2
@@ -387,12 +388,17 @@ var Hand = Cute.type(Point, function (name) {
     this.vector = new Point(dx, dy, dz)
     this.gap = getDistance(index, thumb)
 
+    // We can fly if the other hand is in flight mode as well (same for menu).
+    this.canFly = dy < -0.4 && this.gap > 0.6
+    this.canMenu = (dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3
+
     var gesture = null
+
     if (this.gap < 0.4) {
       gesture = 'grab'
-    } else if (dy < -0.4 && this.gap > 0.6) {
+    } else if (this.canFly && that.canFly) {
       gesture = 'fly'
-    } else if ((dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3) {
+    } else if (this.canMenu && that.canMenu) {
       gesture = 'menu'
     } else if (dz < -0.9) {
       gesture = 'point'

@@ -3,7 +3,6 @@ Cute.ready(function() {
   scene = Cute.one('a-scene')
   camera = Cute.one('a-camera')
   assets = Cute.one('a-assets')
-  console.log(camera)
 })
 
 Cute.on('touchend', function() {
@@ -17,24 +16,54 @@ window.moveFinger = function (finger) {
   Cute.attr(element, 'position', position)
 }
 
-var last
-Cute.on('draw:start', function (data) {
-  last = camera.object3D.localToWorld(
-    new THREE.Vector3(data.x, data.y, data.z))
-})
-
-window.emit = function (name, hand) {
-  Cute.emit(document, name, hand)
-  if (!/move/.test(name)) {
-    socket.emit('gesture', name)
-  }
-}
-
 // Cute.on('point:start', function () {
 //   var shapes = ['box', 'cone', 'cylinder', 'torus', 'sphere']
 //   var shape = shapes[Math.floor(Math.random() * 5)]
 //   plopShape({name: shape})
 // })
+
+window.emit = function (name, hand) {
+  Cute.emit(document, name, hand)
+  if (false) {
+    socket.emit('gesture', name)
+  }
+}
+
+var flyTimer
+var flyHands = []
+Cute.on('fly:start', function (hand) {
+  flyHands[hand.i] = hand
+  clearInterval(flyTimer)
+  flyTimer = setInterval(fly, 20)
+})
+
+Cute.on('fly:end', function (hand) {
+  clearInterval(flyTimer)
+})
+
+function fly () {
+  var dx = 0
+  var dz = 0
+  Cute.each(flyHands, function (hand) {
+    dx += hand.thumb.x - hand.index.x
+    dz += hand.thumb.z - hand.index.z
+  })
+  var c3d = camera.object3D
+  var yaw = c3d.rotation._y
+  if (window.isMobile) {
+    c3d.rotateY(dx * 0.03)
+    c3d.translateZ(-dz * 0.2 + 0.1)
+  } else {
+    c3d.rotateY(-dx * 0.03)
+    c3d.translateZ(dz * 0.2 - 0.1)
+  }
+}
+
+var last
+Cute.on('draw:start', function (data) {
+  last = camera.object3D.localToWorld(
+    new THREE.Vector3(data.x, data.y, data.z))
+})
 
 var drawN = 0
 Cute.on('draw:move', function (data) {
